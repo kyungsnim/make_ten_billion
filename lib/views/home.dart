@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:make_ten_billion/controller/auth_controller.dart';
-import 'package:make_ten_billion/widgets/form_vertical_spacing.dart';
-import 'package:make_ten_billion/widgets/label_button.dart';
-import 'package:make_ten_billion/widgets/primary_button.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'views.dart';
 
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authController = AuthController.to;
-    PageController pageController = PageController(
-      initialPage: 0
-    );
 
     return GetBuilder<AuthController>(
       builder: (_) =>
@@ -49,6 +42,8 @@ class Home extends StatelessWidget {
               ],
             ),
             floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              backgroundColor: Colors.redAccent,
               onPressed: () {
                 Get.toNamed('add_notice');
               },
@@ -67,7 +62,7 @@ class Home extends StatelessWidget {
         title: Text("종료하시겠습니까?",
             style: TextStyle(fontFamily: 'Nanum', fontSize: 18)),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(
               "확인",
               style: TextStyle(
@@ -77,7 +72,7 @@ class Home extends StatelessWidget {
               SystemNavigator.pop();
             },
           ),
-          FlatButton(
+          TextButton(
             child: Text(
               "취소",
               style: TextStyle(

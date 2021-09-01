@@ -9,6 +9,7 @@ class NoticeModel {
   late int read;
   int like;
   DateTime createdAt;
+  List<dynamic> likeList;
 
   NoticeModel(
       {required this.id,
@@ -18,6 +19,7 @@ class NoticeModel {
       required this.imgUrl,
       required this.read,
       required this.like,
+      required this.likeList,
       required this.createdAt});
 
   // factory NoticeModel.fromMap(Map data) {
@@ -32,7 +34,8 @@ class NoticeModel {
         "description": description,
         "imgUrl": imgUrl,
         "read": read,
-        "read": like,
+        "like": like,
+        "likeList": likeList,
       };
 
   NoticeModel.fromMap(var data)
@@ -42,6 +45,7 @@ class NoticeModel {
         description = data['description'],
         read = data['read'] ?? 0,
         like = data['like'] ?? 0,
+        likeList = data['likeList'] ?? [],
         imgUrl = data['imgUrl'] ?? '',
         createdAt = data['createdAt'].toDate();
 

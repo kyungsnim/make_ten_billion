@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       }),
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      initialRoute: "/",
+      initialRoute: "/sign_in",
       getPages: AppRoutes.routes,
     );
   }

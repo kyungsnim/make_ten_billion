@@ -14,7 +14,7 @@ class NoticeController extends GetxController {
   Rxn<NoticeModel> notice = Rxn<NoticeModel>();
   var count = 0;
   var lastRow = 0;
-  final FETCH_ROW = 10;
+  final FETCH_ROW = 5;
   var stream;
   ScrollController scrollController = new ScrollController();
   var noticeDbRef = FirebaseFirestore.instance.collection('HowToBeRich');
@@ -25,12 +25,12 @@ class NoticeController extends GetxController {
   void onReady() async {
     //run every time auth state changes
     // await FlutterSecureStorage().deleteAll();
-    scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
-        stream = newStream();
-      }
-    });
+    // scrollController.addListener(() {
+    //   if (scrollController.position.pixels ==
+    //       scrollController.position.maxScrollExtent) {
+    //     stream = newStream();
+    //   }
+    // });
     super.onReady();
   }
 
@@ -42,32 +42,29 @@ class NoticeController extends GetxController {
   }
 
   void addNotice(String noticeId, Map<String, dynamic> noticeData) {
-    writeBatch.set(
-        FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId),
-        noticeData);
-    writeBatch.commit();
+    FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId).set(noticeData);
     update();
   }
 
-  void addViewCount() {
-    // 조회수 1 증가
-    FirebaseFirestore.instance
-        .collection('HowToBeRich')
-        .doc(notice.value!.id)
-        .update(({'read': notice.value!.read + 1}));
-    notice.value!.read += 1;
-    update();
-  }
+  // void addViewCount() {
+  //   // 조회수 1 증가
+  //   FirebaseFirestore.instance
+  //       .collection('HowToBeRich')
+  //       .doc(notice.value!.id)
+  //       .update(({'read': notice.value!.read + 1}));
+  //   notice.value!.read += 1;
+  //   update();
+  // }
 
-  void addLikeCount() {
-    // 좋아요 1 증가
-    FirebaseFirestore.instance
-        .collection('HowToBeRich')
-        .doc(notice.value!.id)
-        .update(({'like': notice.value!.like + 1}));
-    notice.value!.like += 1;
-    update();
-  }
+  // void addLikeCount() {
+  //   // 좋아요 1 증가
+  //   FirebaseFirestore.instance
+  //       .collection('HowToBeRich')
+  //       .doc(notice.value!.id)
+  //       .update(({'like': notice.value!.like + 1}));
+  //   notice.value!.like += 1;
+  //   update();
+  // }
 
   void setCreatedAt(context) async {
     picked = (await showDatePicker(
