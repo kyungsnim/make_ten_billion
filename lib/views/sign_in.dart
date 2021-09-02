@@ -54,6 +54,7 @@ class SignIn extends StatelessWidget {
                     FormVerticalSpace(),
                     PrimaryButton(
                         labelText: '로그인',
+                        buttonColor: Colors.amber,
                         onPressed: () async {
                           // if (_formKey.currentState!.validate()) {
                           SystemChannels.textInput.invokeMethod(

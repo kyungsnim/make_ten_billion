@@ -62,6 +62,7 @@ class SignUp extends StatelessWidget {
                     FormVerticalSpace(),
                     PrimaryButton(
                         labelText: '회원가입',
+                        buttonColor: Colors.amber,
                         onPressed: () async {
                           // if (_formKey.currentState!.validate()) {
                             SystemChannels.textInput.invokeMethod(

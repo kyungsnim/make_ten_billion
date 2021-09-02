@@ -175,6 +175,12 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
 
+                          Text(
+                              notice.createdAt.toString().substring(0, 10),
+                              softWrap: true,
+                              style: TextStyle(fontWeight: FontWeight.w300),
+                            ),
+
                           /// 조회수
                           Padding(
                             padding:

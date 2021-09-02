@@ -8,14 +8,19 @@ PrimaryButton(
 */
 
 class PrimaryButton extends StatelessWidget {
-  PrimaryButton({required this.labelText, required this.onPressed});
+  PrimaryButton({required this.labelText, required this.buttonColor, required this.onPressed});
 
   final String labelText;
+  final Color buttonColor;
   final void Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        primary: buttonColor, // background
+        onPrimary: Colors.white, // foreground
+      ),
       onPressed: onPressed,
       child: Container(
         alignment: Alignment.center,

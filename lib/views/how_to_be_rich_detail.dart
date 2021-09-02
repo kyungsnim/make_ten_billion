@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
 
+import 'views.dart';
+
 class HowToBeRichDetail extends StatefulWidget {
   var detailNotice;
 
@@ -22,17 +24,17 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   var commentStream;
   ScrollController _scrollController = ScrollController();
   TextEditingController commentController = TextEditingController();
-  
+
   @override
   void initState() {
     super.initState();
-    /// 댓글 목록 불러오기
 
+    /// 댓글 목록 불러오기
     commentStream = newStream();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent &&
+              _scrollController.position.maxScrollExtent &&
           mounted) {
         setState(() {
           commentStream = newStream();
@@ -48,28 +50,48 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   }
 
   Stream<QuerySnapshot> newStream() {
-    return noticeDbRef.doc(widget.detailNotice.id).collection('Comments')
+    return noticeDbRef
+        .doc(widget.detailNotice.id)
+        .collection('Comments')
         .orderBy("createdAt", descending: true)
         .limit(FETCH_ROW * (_lastRow + 1))
         .snapshots();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(builder: (_) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(widget.detailNotice.title,
-              style: TextStyle(color: Colors.black)),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          leading: InkWell(
-              onTap: () => Get.back(),
-              child: Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-              )),
-        ),
+            title: Text(widget.detailNotice.title,
+                style: TextStyle(color: Colors.black)),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: InkWell(
+                onTap: () => Get.back(),
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                )),
+            actionsIconTheme: IconThemeData(color: Colors.black),
+            actions: [
+              authController.firestoreUser.value != null &&
+                      widget.detailNotice.writer ==
+                          authController.firestoreUser.value!.email
+                  ? PopupMenuButton(
+                      onSelected: (selectedValue) {
+                        if (selectedValue == '1') {
+                          // checkUpdatePopup(widget.detailNotice);
+                        } else if (selectedValue == '2') {
+                          checkDeletePopup(widget.detailNotice);
+                        }
+                      },
+                      itemBuilder: (BuildContext ctx) => [
+                            PopupMenuItem(child: Text('수정'), value: '1'),
+                            PopupMenuItem(child: Text('삭제'), value: '2'),
+                          ])
+                  : SizedBox(),
+            ]),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -80,10 +102,13 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                 controller: _scrollController,
                 child: Column(
                   children: [
-                    widget.detailNotice.imgUrl == '' ? Placeholder() : CachedNetworkImage(imageUrl: widget.detailNotice.imgUrl),
+                    widget.detailNotice.imgUrl == ''
+                        ? Placeholder()
+                        : CachedNetworkImage(
+                            imageUrl: widget.detailNotice.imgUrl),
                     Padding(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -113,11 +138,15 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                             ),
                           ),
                           Spacer(),
-                          summaryArea(Icons.remove_red_eye,
-                              (widget.detailNotice.read).toString(), Colors.grey),
+                          summaryArea(
+                              Icons.remove_red_eye,
+                              (widget.detailNotice.read).toString(),
+                              Colors.grey),
                           Spacer(),
-                          summaryArea(Icons.comment_rounded,
-                              (widget.detailNotice.read).toString(), Colors.grey),
+                          summaryArea(
+                              Icons.comment_rounded,
+                              (widget.detailNotice.read).toString(),
+                              Colors.grey),
                         ],
                       ),
                     ),
@@ -177,7 +206,8 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
         });
   }
 
-  Widget _buildCommentList(BuildContext context, List<DocumentSnapshot> snapshot) {
+  Widget _buildCommentList(
+      BuildContext context, List<DocumentSnapshot> snapshot) {
     return ListView.builder(
         shrinkWrap: true,
         physics: ClampingScrollPhysics(),
@@ -217,56 +247,67 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
     return ListTile(
       title: Container(
         decoration: BoxDecoration(
-          // borderRadius: BorderRadius.circular(5),
-        ),
+            // borderRadius: BorderRadius.circular(5),
+            ),
         width: Get.width,
         margin: EdgeInsets.symmetric(vertical: 5),
         // height: 200,
         child: comment.comment != null
             ? Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Container(
-                width: Get.width * 0.25,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// 댓글 게시자
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          comment.writer,
-                          softWrap: true,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(width: 20),
-                        Text(
-                          comment.createdAt.toString().substring(0, 10),
-                          softWrap: true,
-                          style: TextStyle(fontWeight: FontWeight.w200, color: Colors.grey),
-                        ),
-                        Spacer(),
-                        comment.writer == authController.firestoreUser.value!.email ?
-                        InkWell(onTap: () {
-                          checkDeleteCommentPopup(comment, context);
-                        },child: Icon(Icons.delete, color: Colors.grey,)) : SizedBox()
-                      ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      width: Get.width * 0.25,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /// 댓글 게시자
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                comment.writer,
+                                softWrap: true,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(width: 20),
+                              Text(
+                                comment.createdAt.toString().substring(0, 10),
+                                softWrap: true,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w200,
+                                    color: Colors.grey),
+                              ),
+                              Spacer(),
+                              comment.writer ==
+                                      authController.firestoreUser.value!.email
+                                  ? InkWell(
+                                      onTap: () {
+                                        checkDeleteCommentPopup(
+                                            comment, context);
+                                      },
+                                      child: Icon(
+                                        Icons.delete,
+                                        color: Colors.grey,
+                                      ))
+                                  : SizedBox()
+                            ],
+                          ),
+
+                          /// 댓글내용
+                          Text(
+                            comment.comment,
+                            softWrap: true,
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
                     ),
-                    /// 댓글내용
-                    Text(
-                      comment.comment,
-                      softWrap: true,
-                      style: TextStyle(fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        )
+                  ),
+                ],
+              )
             : SizedBox(),
       ),
     );
@@ -286,7 +327,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
             SizedBox(height: 5),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.red, // background
+                primary: Colors.redAccent, // background
                 onPrimary: Colors.white, // foreground
               ),
               onPressed: () {
@@ -311,7 +352,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
           children: [
             Expanded(
                 child: TextFormField(
-                  controller: commentController,
+              controller: commentController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
               decoration: InputDecoration(border: InputBorder.none),
@@ -322,8 +363,13 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                 onPrimary: Colors.white, // foreground
               ),
               onPressed: () {
-                var commentId = DateTime.now().millisecondsSinceEpoch.toString();
-                noticeDbRef.doc(widget.detailNotice.id).collection('Comments').doc(commentId).set({
+                var commentId =
+                    DateTime.now().millisecondsSinceEpoch.toString();
+                noticeDbRef
+                    .doc(widget.detailNotice.id)
+                    .collection('Comments')
+                    .doc(commentId)
+                    .set({
                   'id': commentId,
                   'comment': commentController.text,
                   'writer': authController.firestoreUser.value!.email,
@@ -343,6 +389,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
       ),
     );
   }
+
   void addLikeCount(notice) {
     // 좋아요 1 증가
     FirebaseFirestore.instance
@@ -456,7 +503,11 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                   fontFamily: 'Nanum', fontSize: 18, color: Colors.redAccent),
             ),
             onPressed: () {
-              noticeDbRef.doc(widget.detailNotice.id).collection('Comments').doc(comment.id).delete();
+              noticeDbRef
+                  .doc(widget.detailNotice.id)
+                  .collection('Comments')
+                  .doc(comment.id)
+                  .delete();
               Navigator.pop(context);
             },
           ),
@@ -471,5 +522,54 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
         ],
       ),
     );
+  }
+
+  checkDeletePopup(NoticeModel detailNotice) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('게시글 삭제', style: TextStyle(fontFamily: 'Nanum', )),
+            content: Text("게시글을 삭제하시겠습니까?",
+                style: TextStyle(fontFamily: 'Nanum', color: Colors.redAccent)),
+            actions: [
+              TextButton(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text('확인',
+                      style: TextStyle(fontFamily: 'Nanum',
+                          color: Colors.redAccent, fontSize: 20)),
+                ),
+                onPressed: () async {
+
+                  // batch 생성
+                  WriteBatch writeBatch =
+                  FirebaseFirestore.instance.batch();
+
+                  // Feed 게시글 삭제
+                  writeBatch.delete(FirebaseFirestore.instance.collection('HowToBeRich').doc(detailNotice.id));
+
+                  // batch end
+                  writeBatch.commit();
+
+                  Navigator.pop(context);
+                  Get.offAll(() => Home());
+                  Get.snackbar('게시글 삭제', "삭제가 완료되었습니다.");
+                },
+              ),
+              TextButton(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text('취소',
+                      style: TextStyle(fontFamily: 'Nanum',
+                          color: Colors.grey, fontSize: 20)),
+                ),
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 }
