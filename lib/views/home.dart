@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
           length: 3,
           child: Scaffold(
             appBar: AppBar(
-              title: Text('100억 부자 되기', style: TextStyle(color: Colors.black),),
+              title: Text('매일 읽는 100억 부자 되기 습관', style: TextStyle(color: Colors.black),),
               bottom: TabBar(
                 labelColor: Colors.black,
                 indicatorColor: Colors.black,
@@ -36,7 +36,6 @@ class Home extends StatelessWidget {
             body: TabBarView(
               children: [
                 HowToBeRichScreen(),
-                // HowToBeRichScreen(),
                 MotivationScreen(),
                 ThinkAboutRichScreen(),
               ],

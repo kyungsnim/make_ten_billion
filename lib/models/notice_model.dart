@@ -8,6 +8,7 @@ class NoticeModel {
   String imgUrl;
   late int read;
   int like;
+  int share;
   DateTime createdAt;
   List<dynamic> likeList;
 
@@ -19,6 +20,7 @@ class NoticeModel {
       required this.imgUrl,
       required this.read,
       required this.like,
+      required this.share,
       required this.likeList,
       required this.createdAt});
 
@@ -35,6 +37,7 @@ class NoticeModel {
         "imgUrl": imgUrl,
         "read": read,
         "like": like,
+    "share": share,
         "likeList": likeList,
       };
 
@@ -45,6 +48,7 @@ class NoticeModel {
         description = data['description'],
         read = data['read'] ?? 0,
         like = data['like'] ?? 0,
+        share = data['share'] ?? 0,
         likeList = data['likeList'] ?? [],
         imgUrl = data['imgUrl'] ?? '',
         createdAt = data['createdAt'].toDate();

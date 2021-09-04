@@ -10,8 +10,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Get.put<AuthController>(AuthController());
-  Get.put<ThemeController>(ThemeController());
-  Get.put<LanguageController>(LanguageController());
+  // Get.put<ThemeController>(ThemeController());
+  // Get.put<LanguageController>(LanguageController());
   runApp(MyApp());
 }
 
@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialBinding: BindingsBuilder(() {
         // Get.put(AuthController());
-        Get.put(ChatController());
+        // Get.put(ChatController());
         Get.put(NoticeController());
-        Get.put(GeoController());
+        // Get.put(GeoController());
       }),
       title: 'Flutter Demo',
       theme: ThemeData.dark(),

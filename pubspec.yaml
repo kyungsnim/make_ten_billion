@@ -24,16 +24,16 @@ dependencies:
   flutter:
     sdk: flutter
 
-  expandable: ^5.0.1 # 펼치기 기능
+#  expandable: ^5.0.1 # 펼치기 기능
   loading_indicator: ^3.0.1 # loading icon
-  geolocator: ^7.4.0 # for get latitude, longitude
-  geocoding: ^2.0.0 # for get address with lat/lng
-  weather: ^2.0.1
+#  geolocator: ^7.4.0 # for get latitude, longitude
+#  geocoding: ^2.0.0 # for get address with lat/lng
+#  weather: ^2.0.1
   get: ^4.3.4
-  get_storage: ^2.0.2
-  hive: ^2.0.4
+#  get_storage: ^2.0.2
+#  hive: ^2.0.4
   #  toast:
-  intl: ^0.17.0
+#  intl: ^0.17.0
   firebase_auth: ^3.0.1
   cloud_firestore: ^2.4.0
   firebase_core: ^1.4.0
@@ -41,20 +41,21 @@ dependencies:
   image_cropper: ^1.4.1
   image_picker: ^0.8.4
   firebase_storage: ^10.0.3
+  share: ^2.0.4
 
   # for helpers
-  crypto: ^3.0.1
-  http: ^0.13.1
-  csv: ^5.0.0
+#  crypto: ^3.0.1
+#  http: ^0.13.1
+#  csv: ^5.0.0
 
   # for sns login
   google_sign_in: ^5.0.7
   # for kakao login
-  kakao_flutter_sdk: ^0.7.0
-  dio: ^4.0.0
-  json_annotation: ^4.0.1
-  package_info: ^2.0.0
-  platform: ^3.0.0
+#  kakao_flutter_sdk: ^0.7.0
+#  dio: ^4.0.0
+#  json_annotation: ^4.0.1
+#  package_info: ^2.0.0
+#  platform: ^3.0.0
   shared_preferences: ^2.0.5
   # for auto login
   flutter_secure_storage: ^4.2.1

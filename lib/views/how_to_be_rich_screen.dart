@@ -34,7 +34,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-              _scrollController.position.maxScrollExtent &&
+          _scrollController.position.maxScrollExtent &&
           mounted) {
         setState(() {
           stream = newStream();
@@ -143,88 +143,88 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
         // height: 200,
         child: notice.title != null
             ? Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: Get.width * 0.25,
-                    height: Get.width * 0.25,
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(blurRadius: 5, color: Colors.black54)
-                    ]),
-                    child: notice.imgUrl == ''
-                        ? Placeholder()
-                        : CachedNetworkImage(
-                            imageUrl: notice.imgUrl, fit: BoxFit.fill),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: Get.width * 0.25,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: Get.width * 0.25,
+              height: Get.width * 0.25,
+              decoration: BoxDecoration(boxShadow: [
+                BoxShadow(blurRadius: 5, color: Colors.black54)
+              ]),
+              child: notice.imgUrl == ''
+                  ? Placeholder()
+                  : CachedNetworkImage(
+                  imageUrl: notice.imgUrl, fit: BoxFit.fill),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Container(
+                height: Get.width * 0.25,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      notice.title.length > 20
+                          ? notice.title.toString().substring(0, 18) +
+                          '...'
+                          : notice.title,
+                      softWrap: true,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+
+                    Text(
+                      notice.createdAt.toString().substring(0, 10),
+                      softWrap: true,
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
+
+                    /// 조회수
+                    Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Row(
                         children: [
-                          Text(
-                            notice.title.length > 20
-                                ? notice.title.toString().substring(0, 18) +
-                                    '...'
-                                : notice.title,
-                            softWrap: true,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Icon(
+                            Icons.favorite,
+                            color: Colors.grey,
                           ),
-
+                          SizedBox(width: 3),
                           Text(
-                              notice.createdAt.toString().substring(0, 10),
-                              softWrap: true,
-                              style: TextStyle(fontWeight: FontWeight.w300),
-                            ),
-
-                          /// 조회수
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.favorite,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(width: 3),
-                                Text(
-                                  '${notice.like.toString()}',
-                                  softWrap: true,
-                                ),
-                                Spacer(),
-                                Icon(
-                                  Icons.remove_red_eye,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(width: 3),
-                                Text(
-                                  '${notice.read.toString()}',
-                                  softWrap: true,
-                                ),
-                                Spacer(),
-                                Icon(
-                                  Icons.comment_rounded,
-                                  color: Colors.grey,
-                                ),
-                                SizedBox(width: 3),
-                                Text(
-                                  '${notice.read.toString()}',
-                                  softWrap: true,
-                                ),
-                              ],
-                            ),
+                            '${notice.like.toString()}',
+                            softWrap: true,
+                          ),
+                          Spacer(),
+                          Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 3),
+                          Text(
+                            '${notice.read.toString()}',
+                            softWrap: true,
+                          ),
+                          Spacer(),
+                          Icon(
+                            Icons.share,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 3),
+                          Text(
+                            '${notice.share.toString()}',
+                            softWrap: true,
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                ),
+              ),
+            ),
+          ],
+        )
             : SizedBox(),
       ),
     );

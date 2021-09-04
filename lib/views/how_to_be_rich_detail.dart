@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
+import 'package:share/share.dart';
 
 import 'views.dart';
 
@@ -19,9 +21,12 @@ class HowToBeRichDetail extends StatefulWidget {
 class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   var _lastRow = 0;
   final FETCH_ROW = 5;
+  var heartColor;
+  var heartShape;
   AuthController authController = AuthController.to;
   var noticeDbRef = FirebaseFirestore.instance.collection('HowToBeRich');
   var commentStream;
+  var commentCount;
   ScrollController _scrollController = ScrollController();
   TextEditingController commentController = TextEditingController();
 
@@ -41,6 +46,15 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
         });
       }
     });
+
+    if(widget.detailNotice.likeList.contains(
+        authController.firestoreUser.value!.email)) {
+      heartColor = Colors.redAccent;
+      heartShape = Icons.favorite;
+    } else {
+      heartColor = Colors.grey;
+      heartShape = Icons.favorite_border;
+    }
   }
 
   @override
@@ -122,19 +136,12 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                           // Text('${_.count}'),
                           InkWell(
                             onTap: () {
-                              // addLikeCount(widget.detailNotice);
                               addLikeList();
                             },
                             child: summaryArea(
-                              widget.detailNotice.likeList.contains(
-                                      authController.firestoreUser.value!.email)
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
+                              heartShape,
                               widget.detailNotice.like.toString(),
-                              widget.detailNotice.likeList.contains(
-                                      authController.firestoreUser.value!.email)
-                                  ? Colors.redAccent
-                                  : Colors.grey,
+                              heartColor,
                             ),
                           ),
                           Spacer(),
@@ -143,10 +150,14 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                               (widget.detailNotice.read).toString(),
                               Colors.grey),
                           Spacer(),
-                          summaryArea(
-                              Icons.comment_rounded,
-                              (widget.detailNotice.read).toString(),
-                              Colors.grey),
+                          InkWell(
+                            onTap: () {
+                            },
+                            child: summaryArea(
+                                Icons.share,
+                                (widget.detailNotice.share).toString(),
+                                Colors.grey),
+                          )
                         ],
                       ),
                     ),
@@ -174,6 +185,23 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                               '댓글',
                               style: mediumTextStyle(FontWeight.bold),
                             ),
+                            // SizedBox(width: 5),
+                            // Text(commentCount == null ? '-' : commentCount.toString(),),
+                            Spacer(),
+                            InkWell(
+                              onTap: () {
+                                Share.share(widget.detailNotice.description, subject: widget.detailNotice.title);
+                                addShareCount(widget.detailNotice);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(children: [
+                                  Icon(Icons.share),
+                                  SizedBox(width: 5),
+                                  Text('공유하기', style: mediumTextStyle(FontWeight.bold),),
+                                ],),
+                              ),
+                            )
                           ],
                         )),
 
@@ -201,7 +229,15 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
     return StreamBuilder<QuerySnapshot>(
         stream: commentStream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
+          if (!snapshot.hasData) return Container(
+            width: 30,
+            height: 30,
+            child: LoadingIndicator(
+              indicatorType: Indicator.ballSpinFadeLoader,
+              colors: [Colors.redAccent],
+            ),
+          );
+          commentCount = snapshot.data!.docs.length;
           return _buildCommentList(context, snapshot.data!.docs);
         });
   }
@@ -401,6 +437,17 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
     });
   }
 
+  void addShareCount(notice) {
+    // 공유하기 1 증가
+    FirebaseFirestore.instance
+        .collection('HowToBeRich')
+        .doc(notice.id)
+        .update(({'share': notice.share + 1}));
+    setState(() {
+      notice.share++;
+    });
+  }
+
   void addLikeList() {
     // 좋아요 누르지 않은 경우 빨간 하트로 바꾸고 좋아요+1 해줘야 함
     // 좋아요 리스트에 내가 없는 경우
@@ -432,6 +479,8 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
 
       setState(() {
         widget.detailNotice.like++;
+        heartColor = Colors.redAccent;
+        heartShape = Icons.favorite;
       });
     }
     // 이미 좋아요 누른 경우 또 누르면 빈 하트로 바꾸고 좋아요-1 해줘야 함
@@ -457,6 +506,8 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
 
       setState(() {
         widget.detailNotice.like--;
+        heartColor = Colors.grey;
+        heartShape = Icons.favorite_border;
       });
     }
   }
