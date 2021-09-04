@@ -61,7 +61,7 @@ class SignUp extends StatelessWidget {
                     ),
                     FormVerticalSpace(),
                     PrimaryButton(
-                        labelText: '회원가입',
+                        labelText: '가입하기',
                         buttonColor: Colors.amber,
                         onPressed: () async {
                           // if (_formKey.currentState!.validate()) {
@@ -71,11 +71,13 @@ class SignUp extends StatelessWidget {
                                 .registerWithEmailAndPassword(context);
                           // }
                         }),
-                    FormVerticalSpace(),
-                    LabelButton(
-                      labelText: '이미 계정이 있으신가요? (로그인 화면으로 이동)',
-                      onPressed: () => Get.back(),
-                    ),
+                    SizedBox(height: 10),
+                    PrimaryButton(
+                        labelText: '로그인',
+                        buttonColor: Colors.lightBlue,
+                        onPressed: () async {
+                          Get.to(() => SignUp());
+                        }),
                   ],
                 ),
               ),

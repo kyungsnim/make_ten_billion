@@ -62,11 +62,13 @@ class SignIn extends StatelessWidget {
                           authController.signInWithEmailAndPassword(context);
                           // }
                         }),
-                    FormVerticalSpace(),
-                    LabelButton(
-                      labelText: '계정이 없으신가요? (회원가입 화면으로 이동)',
-                      onPressed: () => Get.to(() => SignUp()),
-                    ),
+                    SizedBox(height: 10),
+                    PrimaryButton(
+                        labelText: '회원가입',
+                        buttonColor: Colors.lightBlue,
+                        onPressed: () async {
+                          Get.to(() => SignUp());
+                        }),
                     FormVerticalSpace(),
                     SnsLoginButton(
                         backgroundColor: Colors.white,

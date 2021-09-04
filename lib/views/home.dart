@@ -20,7 +20,7 @@ class Home extends StatelessWidget {
           length: 3,
           child: Scaffold(
             appBar: AppBar(
-              title: Text('100억'),
+              title: Text('100억 부자 되기', style: TextStyle(color: Colors.black),),
               bottom: TabBar(
                 labelColor: Colors.black,
                 indicatorColor: Colors.black,
@@ -31,7 +31,7 @@ class Home extends StatelessWidget {
                 ],
               ),
               // elevation: 0,
-              backgroundColor: Colors.grey,
+              backgroundColor: Colors.white,
             ),
             body: TabBarView(
               children: [

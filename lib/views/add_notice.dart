@@ -330,18 +330,18 @@ class _AddNoticeState extends State<AddNotice> {
             _imgUrl = value;
 
             // 게시글 업로드 (url 경로를 얻은 후에 업로드 해야 함)
-            uploadDiary();
+            uploadNotice();
           });
         });
       } catch (e) {
         print(e);
       }
     } else {
-      uploadDiary(addImage: false);
+      uploadNotice(addImage: false);
     }
   }
 
-  uploadDiary({addImage}) {
+  uploadNotice({addImage: true}) {
     var id = DateTime.now()
         .millisecondsSinceEpoch
         .toString();
