@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "852584091604",
+    "project_id": "make-ten-billion-dce89",
+    "storage_bucket": "make-ten-billion-dce89.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:852584091604:android:e5dcd352dee8582f249041",
+        "android_client_info": {
+          "package_name": "com.kyungsnim.make_ten_billion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "852584091604-ucn5ek2i9u1jlve3oef60hc1aij2ued9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyungsnim.make_ten_billion",
+            "certificate_hash": "c7db24fd69f5efb54f9069c9dae8f41fa7d666c3"
+          }
+        },
+        {
+          "client_id": "852584091604-mfpmjgcte7er4o1pkcrr31ia187qo8vb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMfz20TeX6mtR5o-Exw5vi1aJaNa-hASE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "852584091604-mfpmjgcte7er4o1pkcrr31ia187qo8vb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "852584091604-g5cc4cu5hhl8bp3vp57rkko5fvepc4jm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.kyungsnim.makeTenBillion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

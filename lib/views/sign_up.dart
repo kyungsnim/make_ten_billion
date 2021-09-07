@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:make_ten_billion/controller/auth_controller.dart';
 import 'package:make_ten_billion/widgets/form_input_field.dart';
 import 'package:make_ten_billion/widgets/form_vertical_spacing.dart';
-import 'package:make_ten_billion/widgets/label_button.dart';
 import 'package:make_ten_billion/widgets/primary_button.dart';
 import 'package:get/get.dart';
 
@@ -40,7 +39,7 @@ class SignUp extends StatelessWidget {
                     FormInputFieldWithIcon(
                       controller: authController.emailController,
                       iconPrefix: Icons.email,
-                      labelText: '회사 메일주소',
+                      labelText: '메일주소',
                       // validator: Validator().email,
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (value) => null,
@@ -76,7 +75,7 @@ class SignUp extends StatelessWidget {
                         labelText: '로그인',
                         buttonColor: Colors.lightBlue,
                         onPressed: () async {
-                          Get.to(() => SignUp());
+                          Get.back();
                         }),
                   ],
                 ),

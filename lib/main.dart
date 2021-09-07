@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/app_routes.dart';
@@ -10,6 +11,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Get.put<AuthController>(AuthController());
+  MobileAds.instance.initialize();
   // Get.put<ThemeController>(ThemeController());
   // Get.put<LanguageController>(LanguageController());
   runApp(MyApp());
@@ -40,7 +42,7 @@ class MyApp extends StatelessWidget {
 
 getCurrentTheme() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  if(prefs.getString('theme') == 'Dark') {
+  if (prefs.getString('theme') == 'Dark') {
     Get.changeTheme(ThemeData.dark());
   } else {
     Get.changeTheme(ThemeData.light());

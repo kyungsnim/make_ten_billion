@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:get/get.dart';
@@ -26,9 +28,21 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   var bannerId;
 
+  final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
+  final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
+
+  BannerAd? banner;
+
   @override
   void initState() {
     super.initState();
+
+    banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: Platform.isIOS ? iOSTestId : androidTestId,
+      listener: BannerAdListener(),
+      request: AdRequest(),
+    )..load();
 
     stream = newStream();
 
@@ -69,6 +83,12 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                   child: ListView(
                     controller: _scrollController,
                     children: [
+                      Container(
+                        height: 50.0,
+                        child: AdWidget(
+                          ad: banner!,
+                        ),
+                      ),
                       _buildBody(context),
                     ],
                   ),
@@ -139,7 +159,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
     return ListTile(
       title: Container(
         width: Get.width,
-        margin: EdgeInsets.symmetric(vertical: 10),
+        margin: EdgeInsets.symmetric(vertical: 5),
         // height: 200,
         child: notice.title != null
             ? Row(
@@ -176,9 +196,9 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                     ),
 
                     Text(
-                      notice.createdAt.toString().substring(0, 10),
+                      notice.createdAt.toString().substring(0, 16),
                       softWrap: true,
-                      style: TextStyle(fontWeight: FontWeight.w300),
+                      style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
                     ),
 
                     /// 조회수
@@ -195,6 +215,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                           Text(
                             '${notice.like.toString()}',
                             softWrap: true,
+                            style: TextStyle(fontSize: 14),
                           ),
                           Spacer(),
                           Icon(
@@ -205,6 +226,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                           Text(
                             '${notice.read.toString()}',
                             softWrap: true,
+                            style: TextStyle(fontSize: 14),
                           ),
                           Spacer(),
                           Icon(
@@ -215,6 +237,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                           Text(
                             '${notice.share.toString()}',
                             softWrap: true,
+                            style: TextStyle(fontSize: 14),
                           ),
                         ],
                       ),

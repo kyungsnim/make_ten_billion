@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
@@ -306,15 +307,16 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                               Text(
                                 comment.writer,
                                 softWrap: true,
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
                               ),
-                              SizedBox(width: 20),
+                              Spacer(),
                               Text(
-                                comment.createdAt.toString().substring(0, 10),
+                                comment.createdAt.toString().substring(5, 16),
                                 softWrap: true,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w200,
-                                    color: Colors.grey),
+                                    color: Colors.grey,
+                                fontSize: 12),
                               ),
                               Spacer(),
                               comment.writer ==
@@ -336,7 +338,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                           Text(
                             comment.comment,
                             softWrap: true,
-                            style: TextStyle(fontWeight: FontWeight.w400),
+                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
                           ),
                         ],
                       ),
@@ -415,7 +417,8 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                 setState(() {
                   commentController.text = '';
                 });
-
+                SystemChannels.textInput.invokeMethod(
+                    'TextInput.hide'); //to hide the keyboard - if any
                 Get.snackbar('댓글 작성', '작성이 완료되었습니다.');
               },
               child: Text('작성'),

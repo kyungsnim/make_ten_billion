@@ -128,9 +128,9 @@ class AuthController extends GetxController {
       });
     } on FirebaseAuthException catch (error) {
       hideLoadingIndicator();
-      Get.snackbar('auth.signUpErrorTitle'.tr, error.message!,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 10),
+      print(error);
+      Get.snackbar('회원가입 오류', '메일주소 혹은 비밀번호를 확인해주세요.',
+          duration: Duration(seconds: 5),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     }
@@ -154,9 +154,8 @@ class AuthController extends GetxController {
       hideLoadingIndicator();
     } catch (error) {
       hideLoadingIndicator();
-      Get.snackbar('auth.signInErrorTitle'.tr, 'auth.signInError'.tr,
-          snackPosition: SnackPosition.BOTTOM,
-          duration: Duration(seconds: 7),
+      Get.snackbar('로그인 오류', '메일주소 혹은 비밀번호를 확인해주세요.',
+          duration: Duration(seconds: 5),
           backgroundColor: Get.theme.snackBarTheme.backgroundColor,
           colorText: Get.theme.snackBarTheme.actionTextColor);
     }
