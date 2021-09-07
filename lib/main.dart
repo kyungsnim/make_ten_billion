@@ -7,6 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'constants/app_routes.dart';
 import 'controller/controllers.dart';
 
+final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
+final String iOSInterstitialTestId = 'ca-app-pub-3940256099942544/4411468910';
+final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

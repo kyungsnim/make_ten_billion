@@ -8,12 +8,16 @@ import 'package:make_ten_billion/models/models.dart';
 import 'package:make_ten_billion/widgets/widgets.dart';
 import 'package:get/get.dart';
 
-class AddNotice extends StatefulWidget {
+class UpdateNotice extends StatefulWidget {
+  NoticeModel detailNotice;
+
+  UpdateNotice(this.detailNotice);
+
   @override
-  _AddNoticeState createState() => _AddNoticeState();
+  _UpdateNoticeState createState() => _UpdateNoticeState();
 }
 
-class _AddNoticeState extends State<AddNotice> {
+class _UpdateNoticeState extends State<UpdateNotice> {
   TextStyle style = TextStyle(fontFamily: 'SLEIGothic', fontSize: 20.0);
   NoticeController noticeController = NoticeController.to;
   AuthController authController = AuthController.to;
@@ -33,8 +37,10 @@ class _AddNoticeState extends State<AddNotice> {
     _title = '';
     _description = '';
 
-    noticeController.titleController.text = '';
-    noticeController.descriptionController.text = '';
+    if(widget.detailNotice != null) {
+      noticeController.titleController.text = widget.detailNotice.title;
+      noticeController.descriptionController.text = widget.detailNotice.description;
+    }
   }
 
   @override
@@ -43,15 +49,9 @@ class _AddNoticeState extends State<AddNotice> {
       return GetBuilder<NoticeController>(builder: (_) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("새 게시글 작성", style: TextStyle(color: Colors.black)),
+            title: Text("게시글 수정", style: TextStyle(color: Colors.black)),
             backgroundColor: Colors.white,
             elevation: 0,
-            leading: _isLoading ? SizedBox() : InkWell(
-                onTap: () => Get.back(),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
-                )),
           ),
           key: _key,
           body: !_isLoading
@@ -224,6 +224,10 @@ class _AddNoticeState extends State<AddNotice> {
                             ),
                           ],
                         )),
+                    widget.detailNotice != null && widget.detailNotice.imgUrl != '' ?
+                        CachedNetworkImage(
+                          imageUrl: widget.detailNotice.imgUrl,
+                        ) :
                     _croppedFile == null ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.grey, // background
@@ -250,7 +254,7 @@ class _AddNoticeState extends State<AddNotice> {
                                 indicatorType: Indicator.ballSpinFadeLoader,
                                 colors: [Colors.black],
                               )) : PrimaryButton(
-                      labelText: '게시글 등록',
+                      labelText: '게시글 수정',
                       buttonColor: Colors.redAccent,
                       onPressed: () {
                         uploadImageToFirebase(context, _croppedFile);
@@ -349,24 +353,25 @@ class _AddNoticeState extends State<AddNotice> {
         .toString();
 
     Map<String, dynamic> noticeData = {
-      'id': id,
+      'id': widget.detailNotice != null ? widget.detailNotice.id : id,
       'title': _title,
       'description': _description,
       'writer':
       authController.firestoreUser.value!.email,
-      'imgUrl': addImage ? noticeController.imgUrl : '',
-      'read': 0,
-      'like': 0,
-      'createdAt': DateTime.now()
+      'imgUrl': addImage ? noticeController.imgUrl : widget.detailNotice.imgUrl,
+      'read': widget.detailNotice.read,
+      'like': widget.detailNotice.like,
+      'likeList': widget.detailNotice.likeList,
+      'createdAt': widget.detailNotice.createdAt,
     };
 
     setState(() {
       _isLoading = false;
     });
 
-    noticeController.addNotice(id, noticeData);
+    noticeController.updateNotice(widget.detailNotice.id, noticeData);
 
-    Get.back();
+    Get.offAllNamed('home');
     Get.snackbar('게시글 작성', '작성이 완료되었습니다.');
   }
 }

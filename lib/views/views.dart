@@ -3,6 +3,7 @@ export 'sign_in.dart';
 export 'sign_up.dart';
 export 'how_to_be_rich_screen.dart';
 export 'add_notice.dart';
+export 'update_notice.dart';
 export 'how_to_be_rich_screen.dart';
 export 'how_to_be_rich_detail.dart';
 export 'motivation_screen.dart';

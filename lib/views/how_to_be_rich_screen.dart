@@ -10,6 +10,8 @@ import 'package:make_ten_billion/models/models.dart';
 import 'package:get/get.dart';
 import 'package:make_ten_billion/views/views.dart';
 
+import '../main.dart';
+
 class HowToBeRichScreen extends StatefulWidget {
   @override
   _HowToBeRichScreenState createState() => _HowToBeRichScreenState();
@@ -27,10 +29,6 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   final authController = AuthController.to;
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   var bannerId;
-
-  final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
-  final String iOSInterstitialTestId = 'ca-app-pub-3940256099942544/4411468910';
-  final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
 
   BannerAd? banner;
   InterstitialAd? interstitial;

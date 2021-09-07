@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:share/share.dart';
 
+import '../main.dart';
 import 'views.dart';
 
 class HowToBeRichDetail extends StatefulWidget {
@@ -31,9 +35,36 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   ScrollController _scrollController = ScrollController();
   TextEditingController commentController = TextEditingController();
 
+  BannerAd? banner;
+  InterstitialAd? interstitial;
+
   @override
   void initState() {
     super.initState();
+
+    banner = BannerAd(
+      size: AdSize.banner,
+      adUnitId: Platform.isIOS ? iOSTestId : androidTestId,
+      listener: BannerAdListener(),
+      request: AdRequest(),
+    )..load();
+
+    InterstitialAd.load(
+        adUnitId: iOSInterstitialTestId,
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            // Keep a reference to the ad so you can show it later.
+            this.interstitial = ad;
+
+            if(DateTime.now().second % 5 == 0) {
+              interstitial!.show();
+            }
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('InterstitialAd failed to load: $error');
+          },
+        ));
 
     /// 댓글 목록 불러오기
     commentStream = newStream();
@@ -96,7 +127,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                   ? PopupMenuButton(
                       onSelected: (selectedValue) {
                         if (selectedValue == '1') {
-                          // checkUpdatePopup(widget.detailNotice);
+                          checkUpdatePopup(widget.detailNotice);
                         } else if (selectedValue == '2') {
                           checkDeletePopup(widget.detailNotice);
                         }
@@ -214,6 +245,12 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                     Divider(),
 
                     /// 댓글 내용
+                    Container(
+                      height: 50.0,
+                      child: AdWidget(
+                        ad: banner!,
+                      ),
+                    ),
                     _buildCommentBody(context),
                   ],
                 ),
@@ -576,6 +613,42 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
         ],
       ),
     );
+  }
+
+  checkUpdatePopup(NoticeModel detailNotice) async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('게시글 수정', style: TextStyle(fontFamily: 'Nanum', )),
+            content: Text("게시글을 수정하시겠습니까?",
+                style: TextStyle(fontFamily: 'Nanum',)),
+            actions: [
+              TextButton(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text('확인',
+                      style: TextStyle(fontFamily: 'Nanum',
+                          color: Colors.redAccent, fontSize: 20)),
+                ),
+                onPressed: () async {
+                  Get.offAll(() => UpdateNotice(detailNotice));
+                },
+              ),
+              TextButton(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Text('취소',
+                      style: TextStyle(fontFamily: 'Nanum',
+                          color: Colors.grey, fontSize: 20)),
+                ),
+                onPressed: () async {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 
   checkDeletePopup(NoticeModel detailNotice) async {

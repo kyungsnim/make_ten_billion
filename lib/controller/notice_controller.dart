@@ -8,6 +8,7 @@ class NoticeController extends GetxController {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController commentController = TextEditingController();
+  String imgUrl = '';
   WriteBatch writeBatch = FirebaseFirestore.instance.batch();
   DateTime _createdAt = DateTime.now();
   DateTime picked = DateTime.now();
@@ -43,6 +44,11 @@ class NoticeController extends GetxController {
 
   void addNotice(String noticeId, Map<String, dynamic> noticeData) {
     FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId).set(noticeData);
+    update();
+  }
+
+  void updateNotice(String noticeId, Map<String, dynamic> noticeData) {
+    FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId).update(noticeData);
     update();
   }
 

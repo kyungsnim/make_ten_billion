@@ -31,7 +31,20 @@ class Home extends StatelessWidget {
                 ],
               ),
               // elevation: 0,
+              centerTitle: true,
               backgroundColor: Colors.white,
+              actionsIconTheme: IconThemeData(color: Colors.black),
+              actions: [
+                PopupMenuButton(
+                    onSelected: (selectedValue) {
+                      if (selectedValue == '1') {
+                        authController.signOut();
+                      }
+                    },
+                    itemBuilder: (BuildContext ctx) => [
+                      PopupMenuItem(child: Text('로그아웃'), value: '1'),
+                    ])
+              ],
             ),
             body: TabBarView(
               children: [
