@@ -29,9 +29,11 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   var bannerId;
 
   final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
+  final String iOSInterstitialTestId = 'ca-app-pub-3940256099942544/4411468910';
   final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
 
   BannerAd? banner;
+  InterstitialAd? interstitial;
 
   @override
   void initState() {
@@ -43,6 +45,23 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
       listener: BannerAdListener(),
       request: AdRequest(),
     )..load();
+
+    InterstitialAd.load(
+        adUnitId: iOSInterstitialTestId,
+        request: AdRequest(),
+        adLoadCallback: InterstitialAdLoadCallback(
+          onAdLoaded: (InterstitialAd ad) {
+            // Keep a reference to the ad so you can show it later.
+            this.interstitial = ad;
+
+            if(DateTime.now().second % 2 == 0) {
+              interstitial!.show();
+            }
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('InterstitialAd failed to load: $error');
+          },
+        ));
 
     stream = newStream();
 
