@@ -79,10 +79,15 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
       }
     });
 
-    if(widget.detailNotice.likeList.contains(
-        authController.firestoreUser.value!.email)) {
-      heartColor = Colors.redAccent;
-      heartShape = Icons.favorite;
+    if(authController.firestoreUser.value != null) {
+      if (widget.detailNotice.likeList.contains(
+          authController.firestoreUser.value!.email)) {
+        heartColor = Colors.redAccent;
+        heartShape = Icons.favorite;
+      } else {
+        heartColor = Colors.grey;
+        heartShape = Icons.favorite_border;
+      }
     } else {
       heartColor = Colors.grey;
       heartShape = Icons.favorite_border;
@@ -356,7 +361,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                                 fontSize: 12),
                               ),
                               Spacer(),
-                              comment.writer ==
+                                  authController.firestoreUser.value != null && comment.writer ==
                                       authController.firestoreUser.value!.email
                                   ? InkWell(
                                       onTap: () {
@@ -406,7 +411,8 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                 onPrimary: Colors.white, // foreground
               ),
               onPressed: () {
-                Get.toNamed('sign_in');
+                // Get.toNamed('sign_in');
+                Get.to(SignIn());
               },
               child: Text('로그인'),
             )

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
 
 import 'constants/app_routes.dart';
 import 'controller/controllers.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       }),
       title: 'Flutter Demo',
       theme: ThemeData.dark(),
-      initialRoute: "/sign_in",
+      initialRoute: "/home",
       getPages: AppRoutes.routes,
     );
   }

@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kyungsnim.make_ten_billion">
    <application
-        android:label="make_ten_billion"
-        android:icon="@mipmap/ic_launcher"
+        android:label="매일 부자 습관"
+        android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"

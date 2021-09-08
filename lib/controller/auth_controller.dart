@@ -53,12 +53,12 @@ class AuthController extends GetxController {
     }
 
     /// 앱 시작시 기존 로그인했던 사용자라면 바로 HomeUI로, 로그인 필요한 사용자라면 SignInUI 페이지로 이동
-    if (_firebaseUser == null) {
-      print('Send to signin');
-      Get.offAll(() => SignIn());
-    } else {
-      Get.offAll(() => Home());
-    }
+    // if (_firebaseUser == null) {
+    //   print('Send to signin');
+    //   Get.offAll(() => SignIn());
+    // } else {
+    //   Get.offAll(() => Home());
+    // }
   }
 
   //Streams the firestore user from the firestore collection

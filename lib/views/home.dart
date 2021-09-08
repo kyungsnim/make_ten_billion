@@ -11,9 +11,9 @@ class Home extends StatelessWidget {
 
     return GetBuilder<AuthController>(
       builder: (_) =>
-      authController.firebaseUser.value == null
-          ? Center(child: CircularProgressIndicator())
-          :
+      // authController.firebaseUser.value == null
+      //     ? Center(child: CircularProgressIndicator())
+      //     :
       WillPopScope(
         onWillPop: () => _onBackPressed(context),
         child: DefaultTabController(
