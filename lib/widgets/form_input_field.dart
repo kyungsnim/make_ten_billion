@@ -23,7 +23,7 @@ class FormInputFieldWithIcon extends StatelessWidget {
         this.minLines = 1,
         this.maxLines,
         required this.onChanged,
-        required this.onSaved});
+        required this.onSaved, required String? Function(String? value) validator});
 
   final TextEditingController controller;
   final IconData iconPrefix;

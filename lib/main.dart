@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         Get.put(NoticeController());
         // Get.put(GeoController());
       }),
-      title: 'Flutter Demo',
+      title: '매일 부자 습관',
       theme: ThemeData.dark(),
       initialRoute: "/home",
       getPages: AppRoutes.routes,

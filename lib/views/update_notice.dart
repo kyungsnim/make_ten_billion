@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
+import 'package:make_ten_billion/views/views.dart';
 import 'package:make_ten_billion/widgets/widgets.dart';
 import 'package:get/get.dart';
 
 class UpdateNotice extends StatefulWidget {
   NoticeModel detailNotice;
+  String collectionName;
 
-  UpdateNotice(this.detailNotice);
+  UpdateNotice(this.detailNotice, this.collectionName);
 
   @override
   _UpdateNoticeState createState() => _UpdateNoticeState();
@@ -40,6 +42,8 @@ class _UpdateNoticeState extends State<UpdateNotice> {
     if(widget.detailNotice != null) {
       noticeController.titleController.text = widget.detailNotice.title;
       noticeController.descriptionController.text = widget.detailNotice.description;
+      _title = widget.detailNotice.title;
+      _description = widget.detailNotice.description;
     }
   }
 
@@ -284,7 +288,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
           _croppedFile = croppedFile;
         });
       }else {
-        Get.snackbar('사진 선택', '사진 선택을 취소하였습니다.');
+        Get.snackbar('사진 선택', '사진 선택을 취소하였습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
       }
     });
   }
@@ -369,9 +373,19 @@ class _UpdateNoticeState extends State<UpdateNotice> {
       _isLoading = false;
     });
 
-    noticeController.updateNotice(widget.detailNotice.id, noticeData);
+    switch(widget.collectionName) {
+      case 'HowToBeRich':
+        noticeController.updateHowToBeRichNotice(widget.detailNotice.id, noticeData);
+        break;
+      case 'Motivation':
+        noticeController.updateMotivationNotice(widget.detailNotice.id, noticeData);
+        break;
+      case 'ThinkAboutRich':
+        noticeController.updateThinkAboutRichNotice(widget.detailNotice.id, noticeData);
+        break;
+    }
 
-    Get.offAllNamed('home');
-    Get.snackbar('게시글 작성', '작성이 완료되었습니다.');
+    Get.offAll(() => Home());
+    Get.snackbar('게시글 수정', '수정이 완료되었습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
   }
 }

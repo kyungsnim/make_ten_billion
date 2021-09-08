@@ -1,10 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
-import 'package:make_ten_billion/models/models.dart';
 import 'package:make_ten_billion/widgets/widgets.dart';
 import 'package:get/get.dart';
 
@@ -25,7 +22,12 @@ class _AddNoticeState extends State<AddNotice> {
   bool processing = false;
 
   var _croppedFile;
-
+  var _category;
+  final _categoryList = [
+    '부자되는 방법',
+    '부자 동기부여',
+    '투자에 대한 생각'
+  ];
   @override
   void initState() {
     // TODO: implement initState
@@ -63,6 +65,56 @@ class _AddNoticeState extends State<AddNotice> {
                 alignment: Alignment.center,
                 child: ListView(
                   children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                    child: Text('카테고리',
+                                        style: TextStyle(
+                                            fontFamily: 'SLEIGothic',
+                                            fontWeight:
+                                            FontWeight.bold))),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 3),
+                          Container(
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: DropdownButton(
+                                      value: _category,
+                                      icon: Icon(Icons.arrow_downward),
+                                      underline: Container(
+                                        height: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      items: _categoryList.map((value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text("$value",
+                                              style: TextStyle(
+                                                  fontSize: 15)),
+                                        );
+                                      }).toList(),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          _category = value;
+                                        });
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 8.0),
@@ -280,7 +332,7 @@ class _AddNoticeState extends State<AddNotice> {
           _croppedFile = croppedFile;
         });
       }else {
-        Get.snackbar('사진 선택', '사진 선택을 취소하였습니다.');
+        Get.snackbar('사진 선택', '사진 선택을 취소하였습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
       }
     });
   }
@@ -364,9 +416,18 @@ class _AddNoticeState extends State<AddNotice> {
       _isLoading = false;
     });
 
-    noticeController.addNotice(id, noticeData);
-
+    switch(_category) {
+      case '부자되는 방법':
+      noticeController.addHowToBeRichNotice(id, noticeData);
+      break;
+      case '부자 동기부여':
+        noticeController.addMotivationNotice(id, noticeData);
+        break;
+      case '투자에 대한 생각':
+        noticeController.addThinkAboutRichNotice(id, noticeData);
+        break;
+    }
     Get.back();
-    Get.snackbar('게시글 작성', '작성이 완료되었습니다.');
+    Get.snackbar('게시글 작성', '작성이 완료되었습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
   }
 }

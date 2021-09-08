@@ -14,22 +14,22 @@ import 'package:share/share.dart';
 import '../main.dart';
 import 'views.dart';
 
-class HowToBeRichDetail extends StatefulWidget {
+class ThinkAboutRichDetail extends StatefulWidget {
   var detailNotice;
 
-  HowToBeRichDetail(this.detailNotice);
+  ThinkAboutRichDetail(this.detailNotice);
 
   @override
-  _HowToBeRichDetailState createState() => _HowToBeRichDetailState();
+  _ThinkAboutRichDetailState createState() => _ThinkAboutRichDetailState();
 }
 
-class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
+class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
   var _lastRow = 0;
   final FETCH_ROW = 5;
   var heartColor;
   var heartShape;
   AuthController authController = AuthController.to;
-  var noticeDbRef = FirebaseFirestore.instance.collection('HowToBeRich');
+  var noticeDbRef = FirebaseFirestore.instance.collection('ThinkAboutRich');
   var commentStream;
   var commentCount;
   ScrollController _scrollController = ScrollController();
@@ -475,7 +475,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   void addLikeCount(notice) {
     // 좋아요 1 증가
     FirebaseFirestore.instance
-        .collection('HowToBeRich')
+        .collection('ThinkAboutRich')
         .doc(notice.id)
         .update(({'like': notice.like + 1}));
     setState(() {
@@ -486,7 +486,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   void addShareCount(notice) {
     // 공유하기 1 증가
     FirebaseFirestore.instance
-        .collection('HowToBeRich')
+        .collection('ThinkAboutRich')
         .doc(notice.id)
         .update(({'share': notice.share + 1}));
     setState(() {
@@ -638,7 +638,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                           color: Colors.redAccent, fontSize: 20)),
                 ),
                 onPressed: () async {
-                  Get.offAll(() => UpdateNotice(detailNotice, 'HowToBeRich'));
+                  Get.offAll(() => UpdateNotice(detailNotice, 'ThinkAboutRich'));
                 },
               ),
               TextButton(
@@ -680,7 +680,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                   FirebaseFirestore.instance.batch();
 
                   // Feed 게시글 삭제
-                  writeBatch.delete(FirebaseFirestore.instance.collection('HowToBeRich').doc(detailNotice.id));
+                  writeBatch.delete(FirebaseFirestore.instance.collection('ThinkAboutRich').doc(detailNotice.id));
 
                   // batch end
                   writeBatch.commit();

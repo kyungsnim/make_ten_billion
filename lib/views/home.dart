@@ -24,6 +24,7 @@ class Home extends StatelessWidget {
               bottom: TabBar(
                 labelColor: Colors.black,
                 indicatorColor: Colors.black,
+                physics: NeverScrollableScrollPhysics(),
                 tabs: [
                   Tab(text: '부자되는 방법', ),
                   Tab(text: '부자 동기부여',),
@@ -38,11 +39,11 @@ class Home extends StatelessWidget {
                 PopupMenuButton(
                     onSelected: (selectedValue) {
                       if (selectedValue == '1') {
-                        authController.signOut();
+                        authController.firestoreUser.value != null ? authController.signOut() : Get.offAll(() => SignIn());
                       }
                     },
                     itemBuilder: (BuildContext ctx) => [
-                      PopupMenuItem(child: Text('로그아웃'), value: '1'),
+                      authController.firestoreUser.value != null ? PopupMenuItem(child: Text('로그아웃'), value: '1') : PopupMenuItem(child: Text('로그인'), value: '1'),
                     ])
               ],
             ),

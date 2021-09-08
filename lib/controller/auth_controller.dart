@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:make_ten_billion/models/user_model.dart';
@@ -71,11 +72,6 @@ class AuthController extends GetxController {
         .map((snapshot) => UserModel.fromMap(snapshot.data()!));
   }
 
-  /// user data 불러오기
-  void fetchUserModel() async {
-    // _userData =
-  }
-
   // User registration using email and password
   registerWithEmailAndPassword(BuildContext context) async {
     showLoadingIndicator();
@@ -124,15 +120,17 @@ class AuthController extends GetxController {
         _createUserFirestore(_newUser, result.user!);
         emailController.clear();
         passwordController.clear();
-        hideLoadingIndicator();
+        // hideLoadingIndicator();
+        if(result.user != null) {
+          Get.offAll(() => Home());
+        }
       });
     } on FirebaseAuthException catch (error) {
-      hideLoadingIndicator();
+      // hideLoadingIndicator();
       print(error);
       Get.snackbar('회원가입 오류', '메일주소 혹은 비밀번호를 확인해주세요.',
           duration: Duration(seconds: 5),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+          backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
     }
   }
 
@@ -146,18 +144,23 @@ class AuthController extends GetxController {
   signInWithEmailAndPassword(BuildContext context) async {
     showLoadingIndicator();
     try {
-      await _auth.signInWithEmailAndPassword(
+      _auth.signInWithEmailAndPassword(
           email: emailController.text.trim(),
-          password: passwordController.text.trim());
+          password: passwordController.text.trim()).then((userCredential) {
+            print(1111111);
+            if(userCredential.user!.email != null) {
+              print(22222222);
+              Get.offAll(() => Home());
+            }
+      });
       emailController.clear();
       passwordController.clear();
-      hideLoadingIndicator();
+      // hideLoadingIndicator();
     } catch (error) {
-      hideLoadingIndicator();
+      // hideLoadingIndicator();
       Get.snackbar('로그인 오류', '메일주소 혹은 비밀번호를 확인해주세요.',
           duration: Duration(seconds: 5),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+          backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
     }
   }
 
@@ -189,16 +192,15 @@ class AuthController extends GetxController {
           _authUpdateUserNotice = 'auth.wrongPasswordNotice'.tr;
         }
       }
-      hideLoadingIndicator();
+      // hideLoadingIndicator();
       Get.snackbar(_authUpdateUserNoticeTitle, _authUpdateUserNotice,
           snackPosition: SnackPosition.BOTTOM,
           duration: Duration(seconds: 5),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+          backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
     } on PlatformException catch (error) {
       //List<String> errors = error.toString().split(',');
       // print("Error: " + errors[1]);
-      hideLoadingIndicator();
+      // hideLoadingIndicator();
       print(error.code);
       String authError;
       switch (error.code) {
@@ -212,8 +214,7 @@ class AuthController extends GetxController {
       Get.snackbar('auth.wrongPasswordNoticeTitle'.tr, authError,
           snackPosition: SnackPosition.BOTTOM,
           duration: Duration(seconds: 10),
-          backgroundColor: Get.theme.snackBarTheme.backgroundColor,
-          colorText: Get.theme.snackBarTheme.actionTextColor);
+    backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
     }
   }
 
@@ -270,6 +271,7 @@ class AuthController extends GetxController {
         }
       });
       await FlutterSecureStorage().write(key: "loginType", value: 'Google');
+      Get.offAll(() => Home());
     } catch (e) {
       print(e.toString());
     }
@@ -313,11 +315,14 @@ class AuthController extends GetxController {
   }
 
   // Sign out
-  Future<void> signOut() {
+  signOut() {
     nameController.clear();
     emailController.clear();
     passwordController.clear();
-    return _auth.signOut();
+    _auth.signOut().then((_) {
+      firestoreUser.value = null;
+      Get.offAll(() => Home());
+    });
   }
 
   // UserModel get userData => _userData.value;

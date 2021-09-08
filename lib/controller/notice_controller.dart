@@ -42,13 +42,33 @@ class NoticeController extends GetxController {
         .snapshots();
   }
 
-  void addNotice(String noticeId, Map<String, dynamic> noticeData) {
+  void addHowToBeRichNotice(String noticeId, Map<String, dynamic> noticeData) {
     FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId).set(noticeData);
     update();
   }
 
-  void updateNotice(String noticeId, Map<String, dynamic> noticeData) {
+  void addMotivationNotice(String noticeId, Map<String, dynamic> noticeData) {
+    FirebaseFirestore.instance.collection('Motivation').doc(noticeId).set(noticeData);
+    update();
+  }
+
+  void addThinkAboutRichNotice(String noticeId, Map<String, dynamic> noticeData) {
+    FirebaseFirestore.instance.collection('ThinkAboutRich').doc(noticeId).set(noticeData);
+    update();
+  }
+
+  void updateHowToBeRichNotice(String noticeId, Map<String, dynamic> noticeData) {
     FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId).update(noticeData);
+    update();
+  }
+
+  void updateMotivationNotice(String noticeId, Map<String, dynamic> noticeData) {
+    FirebaseFirestore.instance.collection('Motivation').doc(noticeId).update(noticeData);
+    update();
+  }
+
+  void updateThinkAboutRichNotice(String noticeId, Map<String, dynamic> noticeData) {
+    FirebaseFirestore.instance.collection('ThinkAboutRich').doc(noticeId).update(noticeData);
     update();
   }
 
