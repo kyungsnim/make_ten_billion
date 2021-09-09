@@ -11,9 +11,6 @@ class Home extends StatelessWidget {
 
     return GetBuilder<AuthController>(
       builder: (_) =>
-      // authController.firebaseUser.value == null
-      //     ? Center(child: CircularProgressIndicator())
-      //     :
       WillPopScope(
         onWillPop: () => _onBackPressed(context),
         child: DefaultTabController(
@@ -54,13 +51,13 @@ class Home extends StatelessWidget {
                 ThinkAboutRichScreen(),
               ],
             ),
-            floatingActionButton: FloatingActionButton(
+            floatingActionButton: authController.firestoreUser.value != null && authController.firestoreUser.value!.role == 'admin' ? FloatingActionButton(
               child: Icon(Icons.add),
               backgroundColor: Colors.redAccent,
               onPressed: () {
                 Get.toNamed('add_notice');
               },
-            ),
+            ) : SizedBox(),
           ),
         ),
       ),

@@ -42,6 +42,11 @@
 - 관리자 아니면 글작성 안되도록 설정 필요
 - 3페이지 모두 구성 완료
 
+## 2021.09.09(목)
+- 스플래쉬 스크린 크기 조정 완료
+- 관리자 아니면 글작성 안되도록 설정 완료
+- 알림 메시지 구현 중
+
 # Complete list
 - 3개 페이지 만들기
 - 게시글 작성 화면 UI 변경 및 사진첨부 기능 추가
@@ -55,3 +60,8 @@
 2. firebase.google.com 접속
 3. Make ten billion 프로젝트 클릭
 4. Firestore Database 클릭 (DB에 해당하는 영역)
+
+# Google Cloud Platform 결제
+1. Firebase.google.com 접속
+2. Storage > Usage > 우측 하단 사용량 및 결제에서 보기 > 세부정보 및 설정 탭
+3. 요금제 수 > 종량제 (Blaze) 요금제 선택 > 결제정보 등록

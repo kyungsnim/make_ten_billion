@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
@@ -33,9 +37,18 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   BannerAd? banner;
   InterstitialAd? interstitial;
 
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
+  // final FlutterNotifications _notifications = Notifications();
   @override
   void initState() {
     super.initState();
+
+    if (Platform.isIOS) {
+      _firebaseMessaging.requestPermission();
+    }
+    getToken();
+
 
     banner = BannerAd(
       size: AdSize.banner,
@@ -52,7 +65,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
             // Keep a reference to the ad so you can show it later.
             this.interstitial = ad;
 
-            if(DateTime.now().second % 2 == 0) {
+            if (DateTime.now().second % 5 == 0) {
               interstitial!.show();
             }
           },
@@ -65,7 +78,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent &&
+              _scrollController.position.maxScrollExtent &&
           mounted) {
         setState(() {
           stream = newStream();
@@ -100,6 +113,12 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                   child: ListView(
                     controller: _scrollController,
                     children: [
+                      TextButton(
+                        onPressed: () {
+
+                        },
+                        child: Text('Get Token'),
+                      ),
                       Container(
                         height: 50.0,
                         child: AdWidget(
@@ -180,91 +199,92 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
         // height: 200,
         child: notice.title != null
             ? Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: Get.width * 0.25,
-              height: Get.width * 0.25,
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(blurRadius: 5, color: Colors.black54)
-              ]),
-              child: notice.imgUrl == ''
-                  ? Placeholder()
-                  : CachedNetworkImage(
-                  imageUrl: notice.imgUrl, fit: BoxFit.fill),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: Container(
-                height: Get.width * 0.25,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      notice.title.length > 20
-                          ? notice.title.toString().substring(0, 18) +
-                          '...'
-                          : notice.title,
-                      softWrap: true,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-
-                    Text(
-                      notice.createdAt.toString().substring(0, 16),
-                      softWrap: true,
-                      style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
-                    ),
-
-                    /// 조회수
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: Get.width * 0.25,
+                    height: Get.width * 0.25,
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(blurRadius: 5, color: Colors.black54)
+                    ]),
+                    child: notice.imgUrl == ''
+                        ? Placeholder()
+                        : CachedNetworkImage(
+                            imageUrl: notice.imgUrl, fit: BoxFit.fill),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: Get.width * 0.25,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Icon(
-                            Icons.favorite,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(width: 3),
                           Text(
-                            '${notice.like.toString()}',
+                            notice.title.length > 20
+                                ? notice.title.toString().substring(0, 18) +
+                                    '...'
+                                : notice.title,
                             softWrap: true,
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Spacer(),
-                          Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(width: 3),
+
                           Text(
-                            '${notice.read.toString()}',
+                            notice.createdAt.toString().substring(0, 16),
                             softWrap: true,
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 14),
                           ),
-                          Spacer(),
-                          Icon(
-                            Icons.share,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(width: 3),
-                          Text(
-                            '${notice.share.toString()}',
-                            softWrap: true,
-                            style: TextStyle(fontSize: 14),
+
+                          /// 조회수
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.favorite,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(width: 3),
+                                Text(
+                                  '${notice.like.toString()}',
+                                  softWrap: true,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.remove_red_eye,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(width: 3),
+                                Text(
+                                  '${notice.read.toString()}',
+                                  softWrap: true,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.share,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(width: 3),
+                                Text(
+                                  '${notice.share.toString()}',
+                                  softWrap: true,
+                                  style: TextStyle(fontSize: 14),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        )
+                  ),
+                ],
+              )
             : SizedBox(),
       ),
     );
@@ -279,5 +299,50 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
     setState(() {
       notice.read++;
     });
+  }
+
+  void getToken() async {
+    _firebaseMessaging.getToken().then((value) {
+      print('>>>> token: $value');
+      // sendAndRetrieveMessage(value!);
+      _firebaseMessaging.sendMessage(to: value!, data: {
+        'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+        'id': '1',
+        'status': 'done'
+      }, );
+    });
+  }
+
+  final String serverToken = 'AAAAxoH4z9Q:APA91bGY_5STcywZSPqKI7jfjtKnXnDHT6_uCSDqQe17UGRM8iD1WJQYZGQyJVLX2TiTJ_drXGRBM-BabcM_RqbrhHrtaMQwMMW_LIHmB6_HjdqMAIHsFzsA9706yUi8okSeNES34koy';
+  Future<Map<String, dynamic>> sendAndRetrieveMessage(String token) async {
+    await http.post(
+      Uri.parse('https://fcm.googleapis.com/fcm/send'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+        'Authorization': 'key=$serverToken',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          'notification': <String, dynamic>{
+            'body': 'hello_world',
+            'title': 'FlutterCloudMessage'
+          },
+          'priority': 'high',
+          'data': <String, dynamic>{
+            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+            'id': '1',
+            'status': 'done'
+          },
+          'to': token,
+        }
+      )
+    );
+
+    final Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Message data: ${message.data}');
+      completer.complete(message.data);
+    });
+    return completer.future;
   }
 }

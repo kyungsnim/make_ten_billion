@@ -115,6 +115,7 @@ class AuthController extends GetxController {
           uid: result.user!.uid,
           profileName: nameController.text,
           email: emailController.text,
+          role: 'general',
         );
         // create the user in firestore
         _createUserFirestore(_newUser, result.user!);
@@ -262,6 +263,7 @@ class AuthController extends GetxController {
             'createdAt': DateTime.now(),
             'loginType': "Google",
             "phoneAuthOk": false,
+            "role": "general",
           });
         } else {
           /// 기존에 저장된 값이 있다면 로그인 시간만 갱신
@@ -272,6 +274,7 @@ class AuthController extends GetxController {
       });
       await FlutterSecureStorage().write(key: "loginType", value: 'Google');
       Get.offAll(() => Home());
+      update();
     } catch (e) {
       print(e.toString());
     }
@@ -321,6 +324,7 @@ class AuthController extends GetxController {
     passwordController.clear();
     _auth.signOut().then((_) {
       firestoreUser.value = null;
+      firebaseUser.value = null;
       Get.offAll(() => Home());
     });
   }

@@ -15,6 +15,7 @@ class ImageController {
 
     // Start crop iamge then take the file.
     File? croppedFile = await ImageCropper.cropImage(
+      compressQuality: 30,
         sourcePath: imageFileFromLibrary.path,
         aspectRatioPresets: [
           CropAspectRatioPreset.square,
@@ -25,7 +26,7 @@ class ImageController {
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Cropper',
-            toolbarColor: Colors.deepOrange,
+            toolbarColor: Colors.redAccent,
             toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.original,
             lockAspectRatio: false),

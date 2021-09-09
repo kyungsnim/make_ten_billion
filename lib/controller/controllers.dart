@@ -5,3 +5,4 @@ export 'auth_controller.dart';
 export 'notice_controller.dart';
 // export 'geo_controller.dart';
 export 'image_controller.dart';
+export 'notification_controller.dart';

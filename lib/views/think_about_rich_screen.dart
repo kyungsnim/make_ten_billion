@@ -54,7 +54,7 @@ class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> {
             // Keep a reference to the ad so you can show it later.
             this.interstitial = ad;
 
-            if(DateTime.now().second % 2 == 0) {
+            if(DateTime.now().second % 5 == 0) {
               interstitial!.show();
             }
           },

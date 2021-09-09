@@ -59,7 +59,7 @@ class SignIn extends StatelessWidget {
                   FormVerticalSpace(),
                   PrimaryButton(
                       labelText: '로그인',
-                      buttonColor: Colors.amber,
+                      buttonColor: Colors.redAccent,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           SystemChannels.textInput.invokeMethod(
@@ -70,7 +70,7 @@ class SignIn extends StatelessWidget {
                   SizedBox(height: 10),
                   PrimaryButton(
                       labelText: '회원가입',
-                      buttonColor: Colors.lightBlue,
+                      buttonColor: Colors.blueAccent,
                       onPressed: () async {
                         Get.to(() => SignUp());
                       }),

@@ -15,7 +15,6 @@ final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Get.put<AuthController>(AuthController());
   MobileAds.instance.initialize();
   // Get.put<ThemeController>(ThemeController());
   // Get.put<LanguageController>(LanguageController());
@@ -32,10 +31,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialBinding: BindingsBuilder(() {
-        // Get.put(AuthController());
-        // Get.put(ChatController());
+        Get.put(AuthController());
         Get.put(NoticeController());
-        // Get.put(GeoController());
+        Get.put(NotificationController());
       }),
       title: '매일 부자 습관',
       theme: ThemeData.dark(),
