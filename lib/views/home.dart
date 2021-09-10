@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
       WillPopScope(
         onWillPop: () => _onBackPressed(context),
         child: DefaultTabController(
-          length: 3,
+          length: 4,
           child: Scaffold(
             appBar: AppBar(
               title: Text('매일 읽는 100억 부자 되기 습관', style: TextStyle(color: Colors.black),),
@@ -23,9 +23,10 @@ class Home extends StatelessWidget {
                 indicatorColor: Colors.black,
                 physics: NeverScrollableScrollPhysics(),
                 tabs: [
-                  Tab(text: '부자되는 방법', ),
-                  Tab(text: '부자 동기부여',),
-                  Tab(text: '투자에 대한 생각',),
+                  Tab(child: Text('부자되는\n방법', textAlign: TextAlign.center,), ),
+                  Tab(child: Text('부자\n동기부여', textAlign: TextAlign.center,),),
+                  Tab(child: Text('투자에 대한\n생각', textAlign: TextAlign.center,),),
+                  Tab(child: Text('공지사항', textAlign: TextAlign.center,),),
                 ],
               ),
               // elevation: 0,
@@ -49,6 +50,7 @@ class Home extends StatelessWidget {
                 HowToBeRichScreen(),
                 MotivationScreen(),
                 ThinkAboutRichScreen(),
+                NoticeBoardScreen(),
               ],
             ),
             floatingActionButton: authController.firestoreUser.value != null && authController.firestoreUser.value!.role == 'admin' ? FloatingActionButton(

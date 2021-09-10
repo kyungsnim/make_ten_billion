@@ -210,7 +210,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                         ],
                       ),
                     ),
-                    Padding(
+                    noticeController.imgUrl != '' ? Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 8.0),
                         child: Column(
@@ -227,18 +227,18 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                               ],
                             ),
                           ],
-                        )),
+                        )) : SizedBox(),
                     widget.detailNotice != null && widget.detailNotice.imgUrl != '' ?
                         CachedNetworkImage(
                           imageUrl: widget.detailNotice.imgUrl,
                         ) :
-                    _croppedFile == null ? ElevatedButton(
+                    _croppedFile == null ? noticeController.imgUrl != '' ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.grey, // background
                           onPrimary: Colors.white, // foreground
                         ),child: Text('사진 선택'), onPressed: () {
                       selectGalleryImage();
-                    },) : InkWell(
+                    },) : SizedBox() : InkWell(
                       onTap: () {
                         selectGalleryImage();
                       },
@@ -382,6 +382,9 @@ class _UpdateNoticeState extends State<UpdateNotice> {
         break;
       case 'ThinkAboutRich':
         noticeController.updateThinkAboutRichNotice(widget.detailNotice.id, noticeData);
+        break;
+      case 'NoticeBoard':
+        noticeController.updateNoticeBoard(widget.detailNotice.id, noticeData);
         break;
     }
 

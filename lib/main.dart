@@ -8,9 +8,14 @@ import 'package:splash_screen_view/SplashScreenView.dart';
 import 'constants/app_routes.dart';
 import 'controller/controllers.dart';
 
+final String androidBannerId = 'ca-app-pub-2486335313636346/9631263349';
+final String androidInterstitialId = 'ca-app-pub-2486335313636346/2479531634';
+final String iOSBannerId = 'ca-app-pub-2486335313636346/1698230176';
+final String iOSInterstitialId = 'ca-app-pub-2486335313636346/6227204951';
+
+final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
 final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
 final String iOSInterstitialTestId = 'ca-app-pub-3940256099942544/4411468910';
-final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
       initialBinding: BindingsBuilder(() {
         Get.put(AuthController());
         Get.put(NoticeController());
-        Get.put(NotificationController());
+        // Get.put(NotificationController());
       }),
       title: '매일 부자 습관',
       theme: ThemeData.dark(),

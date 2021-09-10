@@ -57,6 +57,11 @@ class NoticeController extends GetxController {
     update();
   }
 
+  void addNoticeBoard(String noticeId, Map<String, dynamic> noticeData) {
+    FirebaseFirestore.instance.collection('NoticeBoard').doc(noticeId).set(noticeData);
+    update();
+  }
+
   void updateHowToBeRichNotice(String noticeId, Map<String, dynamic> noticeData) {
     FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId).update(noticeData);
     update();
@@ -69,6 +74,11 @@ class NoticeController extends GetxController {
 
   void updateThinkAboutRichNotice(String noticeId, Map<String, dynamic> noticeData) {
     FirebaseFirestore.instance.collection('ThinkAboutRich').doc(noticeId).update(noticeData);
+    update();
+  }
+
+  void updateNoticeBoard(String noticeId, Map<String, dynamic> noticeData) {
+    FirebaseFirestore.instance.collection('NoticeBoard').doc(noticeId).update(noticeData);
     update();
   }
 

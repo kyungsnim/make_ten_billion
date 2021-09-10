@@ -69,7 +69,8 @@ class AuthController extends GetxController {
     return _db
         .doc('/Users/${firebaseUser.value!.uid}')
         .snapshots()
-        .map((snapshot) => UserModel.fromMap(snapshot.data()!));
+        .map((snapshot) =>
+      UserModel.fromMap(snapshot.data()!));
   }
 
   // User registration using email and password
@@ -112,10 +113,10 @@ class AuthController extends GetxController {
 
         //create the new user object
         UserModel _newUser = UserModel(
+          'general',
           uid: result.user!.uid,
           profileName: nameController.text,
           email: emailController.text,
-          role: 'general',
         );
         // create the user in firestore
         _createUserFirestore(_newUser, result.user!);

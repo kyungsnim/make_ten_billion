@@ -16,12 +16,12 @@ import 'package:make_ten_billion/views/views.dart';
 
 import '../main.dart';
 
-class HowToBeRichScreen extends StatefulWidget {
+class NoticeBoardScreen extends StatefulWidget {
   @override
-  _HowToBeRichScreenState createState() => _HowToBeRichScreenState();
+  _NoticeBoardScreenState createState() => _NoticeBoardScreenState();
 }
 
-class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
+class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
   var _lastRow = 0;
   final FETCH_ROW = 5;
   var stream;
@@ -29,7 +29,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   var weekDayList = ['일', '월', '화', '수', '목', '금', '토', '일'];
 
   ScrollController _scrollController = new ScrollController();
-  var noticeDbRef = FirebaseFirestore.instance.collection('HowToBeRich');
+  var noticeDbRef = FirebaseFirestore.instance.collection('NoticeBoard');
   final authController = AuthController.to;
   GlobalKey<ScaffoldState> scaffoldState = GlobalKey();
   var bannerId;
@@ -187,7 +187,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => HowToBeRichDetail(notice)));
+                    builder: (context) => NoticeBoardDetail(notice)));
           },
           child: _listItem(notice),
         ),
@@ -205,20 +205,20 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
             ? Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: Get.width * 0.25,
-                    height: Get.width * 0.25,
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(blurRadius: 5, color: Colors.black54)
-                    ]),
-                    child: notice.imgUrl == ''
-                        ? Placeholder()
-                        : CachedNetworkImage(
-                            imageUrl: notice.imgUrl, fit: BoxFit.fill),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
+                  // Container(
+                  //   width: Get.width * 0.25,
+                  //   height: Get.width * 0.25,
+                  //   decoration: BoxDecoration(boxShadow: [
+                  //     BoxShadow(blurRadius: 5, color: Colors.black54)
+                  //   ]),
+                  //   child: notice.imgUrl == ''
+                  //       ? Placeholder()
+                  //       : CachedNetworkImage(
+                  //           imageUrl: notice.imgUrl, fit: BoxFit.fill),
+                  // ),
+                  // SizedBox(
+                  //   width: 10,
+                  // ),
                   Expanded(
                     child: Container(
                       height: Get.width * 0.25,
@@ -226,20 +226,18 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            notice.title.length > 20
-                                ? notice.title.toString().substring(0, 18) +
-                                    '...'
-                                : notice.title,
-                            softWrap: true,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-
-                          Text(
-                            notice.createdAt.toString().substring(0, 16),
-                            softWrap: true,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300, fontSize: 14),
+                          Row(
+                            children: [
+                              Text(
+                                notice.title.length > 20
+                                    ? notice.title.toString().substring(0, 18) +
+                                        '...'
+                                    : notice.title,
+                                softWrap: true,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                            ],
                           ),
 
                           /// 조회수
@@ -248,6 +246,14 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                                 const EdgeInsets.symmetric(horizontal: 5.0),
                             child: Row(
                               children: [
+                                Text(
+                                  notice.createdAt.toString().substring(0, 16),
+                                  softWrap: true,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w300, fontSize: 14),
+                                ),
+                                // SizedBox(width: 3),
+                                Spacer(),
                                 Icon(
                                   Icons.favorite,
                                   color: Colors.grey,
@@ -297,14 +303,14 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   void addViewCount(notice) {
     // 조회수 1 증가
     FirebaseFirestore.instance
-        .collection('HowToBeRich')
+        .collection('NoticeBoard')
         .doc(notice.id)
         .update(({'read': notice.read + 1}));
     setState(() {
       notice.read++;
     });
   }
-  //
+
   // String? tmpToken;
   // void getToken() async {
   //   _firebaseMessaging.getToken().then((value) {

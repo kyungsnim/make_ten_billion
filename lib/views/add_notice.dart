@@ -26,7 +26,8 @@ class _AddNoticeState extends State<AddNotice> {
   final _categoryList = [
     '부자되는 방법',
     '부자 동기부여',
-    '투자에 대한 생각'
+    '투자에 대한 생각',
+    '공지사항'
   ];
   @override
   void initState() {
@@ -89,6 +90,7 @@ class _AddNoticeState extends State<AddNotice> {
                                 Expanded(
                                   flex: 1,
                                   child: DropdownButton(
+                                    hint: Text('카테고리를 선택해주세요'),
                                       value: _category,
                                       icon: Icon(Icons.arrow_downward),
                                       underline: Container(
@@ -258,7 +260,7 @@ class _AddNoticeState extends State<AddNotice> {
                         ],
                       ),
                     ),
-                    Padding(
+                    _category != '공지사항' ? Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 8.0),
                         child: Column(
@@ -275,8 +277,8 @@ class _AddNoticeState extends State<AddNotice> {
                               ],
                             ),
                           ],
-                        )),
-                    _croppedFile == null ? ElevatedButton(
+                        )) : SizedBox(),
+                    _category != '공지사항' ? _croppedFile == null ? ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.grey, // background
                           onPrimary: Colors.white, // foreground
@@ -296,7 +298,7 @@ class _AddNoticeState extends State<AddNotice> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                    ),
+                    ) : SizedBox(),
                     FormVerticalSpace(),
                     _isLoading ? Center(child: LoadingIndicator(
                                 indicatorType: Indicator.ballSpinFadeLoader,
@@ -406,7 +408,7 @@ class _AddNoticeState extends State<AddNotice> {
       'description': _description,
       'writer':
       authController.firestoreUser.value!.email,
-      'imgUrl': addImage ? noticeController.imgUrl : '',
+      'imgUrl': addImage && _category != '공지사항' ? noticeController.imgUrl : '',
       'read': 0,
       'like': 0,
       'createdAt': DateTime.now()
@@ -425,6 +427,9 @@ class _AddNoticeState extends State<AddNotice> {
         break;
       case '투자에 대한 생각':
         noticeController.addThinkAboutRichNotice(id, noticeData);
+        break;
+      case '공지사항':
+        noticeController.addNoticeBoard(id, noticeData);
         break;
     }
     Get.back();
