@@ -30,7 +30,7 @@ class SignIn extends StatelessWidget {
                 children: <Widget>[
                   // LogoGraphicHeader(),
                   SizedBox(height: Get.height * 0.1),
-                  Text('매일 부자 습관', style: TextStyle(fontSize: Get.height * 0.05, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                  Text('매일 부자 습관', style: TextStyle(fontFamily: 'Binggrae', fontSize: Get.height * 0.05, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
                   Container(width: Get.width * 0.4, height: Get.width * 0.4, child: Image.asset('assets/icon/icon.jpg')),
                   // SizedBox(height: 48.0),
                   // SizedBox(height: MediaQuery.of(context).size.height * 0.01),
@@ -59,7 +59,7 @@ class SignIn extends StatelessWidget {
                   FormVerticalSpace(),
                   PrimaryButton(
                       labelText: '로그인',
-                      buttonColor: Colors.redAccent,
+                      buttonColor: Colors.green,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           SystemChannels.textInput.invokeMethod(
@@ -76,8 +76,8 @@ class SignIn extends StatelessWidget {
                       }),
                   FormVerticalSpace(),
                   SnsLoginButton(
-                      backgroundColor: Colors.white,
-                      textColor: Colors.black87,
+                      backgroundColor: Colors.redAccent,
+                      textColor: Colors.white,
                       labelText: 'Sign in with google',
                       onPressed: authController.signInWithGoogle),
                   SizedBox(height: 10),

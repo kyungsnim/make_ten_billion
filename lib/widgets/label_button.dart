@@ -16,6 +16,7 @@ class LabelButton extends StatelessWidget {
     return TextButton(
       child: Text(
         labelText,
+        style: TextStyle(fontFamily: 'Binggrae', fontSize: 18),
       ),
       onPressed: onPressed,
     );

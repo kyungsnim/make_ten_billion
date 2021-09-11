@@ -35,6 +35,7 @@ class SnsLoginButton extends StatelessWidget {
             Text(
               labelText.toUpperCase(),
               style: TextStyle(
+                fontFamily: 'Binggrae',
                   fontWeight: FontWeight.bold,
                   fontSize: MediaQuery.of(context).size.width * 0.05,
                   color: textColor),

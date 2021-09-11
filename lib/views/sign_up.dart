@@ -27,7 +27,7 @@ class SignUp extends StatelessWidget {
                   // LogoGraphicHeader(),
                   // SizedBox(height: 48.0),
                   SizedBox(height: Get.height * 0.1),
-                  Text('매일 부자 습관', style: TextStyle(fontSize: Get.height * 0.05, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                  Text('매일 부자 습관', style: TextStyle(fontFamily: 'Binggrae', fontSize: Get.height * 0.05, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
                   Container(width: Get.width * 0.4, height: Get.width * 0.4, child: Image.asset('assets/icon/icon.jpg')),
                   FormInputFieldWithIcon(
                     controller: authController.nameController,
@@ -76,7 +76,7 @@ class SignUp extends StatelessWidget {
                   SizedBox(height: 10),
                   PrimaryButton(
                       labelText: '로그인',
-                      buttonColor: Colors.redAccent,
+                      buttonColor: Colors.green,
                       onPressed: () async {
                         Get.back();
                       }),

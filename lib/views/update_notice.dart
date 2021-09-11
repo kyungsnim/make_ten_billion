@@ -53,7 +53,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
       return GetBuilder<NoticeController>(builder: (_) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("게시글 수정", style: TextStyle(color: Colors.black)),
+            title: Text("게시글 수정", style: TextStyle(fontFamily: 'Binggrae', fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black)),
             backgroundColor: Colors.white,
             elevation: 0,
           ),
@@ -79,7 +79,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                                 child: Container(
                                     child: Text('제목',
                                         style: TextStyle(
-                                            fontFamily: 'SLEIGothic',
+                                            fontFamily: 'Binggrae', fontSize: 18,
                                             fontWeight:
                                             FontWeight.bold))),
                               ),
@@ -107,6 +107,8 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
+                                  style: TextStyle(
+                                    fontFamily: 'Binggrae', fontSize: 18,),
                                   keyboardType: TextInputType.multiline,
                                   maxLines: null,
                                   // expands: true,
@@ -124,8 +126,9 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                                       border: InputBorder.none,
                                       hintText: '제목 입력',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'SLEIGothic',
-                                          fontSize: 15)),
+                                      fontFamily: 'Binggrae', fontSize: 18,
+                                      fontWeight:
+                                      FontWeight.bold)),
                                   onChanged: (val) {
                                     _title = val;
                                   },
@@ -148,7 +151,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                                 child: Container(
                                     child: Text('내용',
                                         style: TextStyle(
-                                            fontFamily: 'SLEIGothic',
+                                            fontFamily: 'Binggrae', fontSize: 18,
                                             fontWeight:
                                             FontWeight.bold))),
                               ),
@@ -176,6 +179,8 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
+                                    style: TextStyle(
+                                        fontFamily: 'Binggrae', fontSize: 18,),
                                   keyboardType: TextInputType.multiline,
                                   maxLines: null,
                                   // expands: true,
@@ -193,8 +198,9 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                                       border: InputBorder.none,
                                       hintText: '내용 입력',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'SLEIGothic',
-                                          fontSize: 15)),
+                                      fontFamily: 'Binggrae', fontSize: 18,
+                                      fontWeight:
+                                      FontWeight.bold)),
                                   onChanged: (val) {
                                     // noticeController.setDescription();
                                     _description = noticeController
@@ -221,7 +227,7 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                                 Container(
                                     child: Text('사진 등록',
                                         style: TextStyle(
-                                            fontFamily: 'SLEIGothic',
+                                            fontFamily: 'Binggrae', fontSize: 18,
                                             fontWeight:
                                             FontWeight.bold))),
                               ],
@@ -236,7 +242,10 @@ class _UpdateNoticeState extends State<UpdateNotice> {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.grey, // background
                           onPrimary: Colors.white, // foreground
-                        ),child: Text('사진 선택'), onPressed: () {
+                        ),child: Text('사진 선택', style: TextStyle(
+                        fontFamily: 'Binggrae', fontSize: 18,
+                        fontWeight:
+                        FontWeight.bold)), onPressed: () {
                       selectGalleryImage();
                     },) : SizedBox() : InkWell(
                       onTap: () {

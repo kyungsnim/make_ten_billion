@@ -43,6 +43,8 @@ class FormInputFieldWithIcon extends StatelessWidget {
         filled: true,
         prefixIcon: Icon(iconPrefix),
         labelText: labelText,
+        labelStyle: TextStyle(
+        fontFamily: 'Binggrae', fontSize: 18,),
       ),
       controller: controller,
       onSaved: onSaved,

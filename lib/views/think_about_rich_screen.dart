@@ -211,13 +211,13 @@ class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> {
                           '...'
                           : notice.title,
                       softWrap: true,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 18,),
                     ),
 
                     Text(
                       notice.createdAt.toString().substring(0, 16),
                       softWrap: true,
-                      style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
+                      style: TextStyle(fontFamily: 'Binggrae', fontSize: 18),
                     ),
 
                     /// 조회수
@@ -243,9 +243,20 @@ class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> {
                           ),
                           SizedBox(width: 3),
                           Text(
+                            '${notice.like.toString()}',
+                            softWrap: true,
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),
+                          ),
+                          Spacer(),
+                          Icon(
+                            Icons.remove_red_eye,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(width: 3),
+                          Text(
                             '${notice.read.toString()}',
                             softWrap: true,
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),
                           ),
                           Spacer(),
                           Icon(
@@ -256,7 +267,7 @@ class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> {
                           Text(
                             '${notice.share.toString()}',
                             softWrap: true,
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),
                           ),
                         ],
                       ),

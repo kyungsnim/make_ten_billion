@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -115,7 +116,8 @@ class _MotivationDetailState extends State<MotivationDetail> {
       return Scaffold(
         appBar: AppBar(
             title: Text(widget.detailNotice.title,
-                style: TextStyle(color: Colors.black)),
+                style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold,
+                    color: Colors.black, fontSize: 26)),
             backgroundColor: Colors.white,
             elevation: 0,
             leading: InkWell(
@@ -138,8 +140,10 @@ class _MotivationDetailState extends State<MotivationDetail> {
                         }
                       },
                       itemBuilder: (BuildContext ctx) => [
-                            PopupMenuItem(child: Text('수정'), value: '1'),
-                            PopupMenuItem(child: Text('삭제'), value: '2'),
+                            PopupMenuItem(child: Text('수정', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold,
+      color: Colors.black, fontSize: 16),), value: '1'),
+                            PopupMenuItem(child: Text('삭제', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold,
+                                color: Colors.black, fontSize: 16)),value: '2'),
                           ])
                   : SizedBox(),
             ]),
@@ -208,7 +212,8 @@ class _MotivationDetailState extends State<MotivationDetail> {
                           Expanded(
                             child: Text(widget.detailNotice.description,
                                 textAlign: TextAlign.start,
-                                style: mediumTextStyle(FontWeight.w400)),
+                                style: TextStyle(fontFamily: 'Binggrae',
+                                    color: Colors.black, fontSize: 20)),
                           ),
                         ],
                       ),
@@ -220,7 +225,8 @@ class _MotivationDetailState extends State<MotivationDetail> {
                           children: [
                             Text(
                               '댓글',
-                              style: mediumTextStyle(FontWeight.bold),
+                              style: TextStyle(fontFamily: 'Binggrae',
+                                  color: Colors.black, fontSize: 20),
                             ),
                             // SizedBox(width: 5),
                             // Text(commentCount == null ? '-' : commentCount.toString(),),
@@ -235,7 +241,8 @@ class _MotivationDetailState extends State<MotivationDetail> {
                                 child: Row(children: [
                                   Icon(Icons.share),
                                   SizedBox(width: 5),
-                                  Text('공유하기', style: mediumTextStyle(FontWeight.bold),),
+                                  Text('공유하기', style: TextStyle(fontFamily: 'Binggrae',
+                                      color: Colors.black, fontSize: 20)),
                                 ],),
                               ),
                             )
@@ -349,16 +356,15 @@ class _MotivationDetailState extends State<MotivationDetail> {
                               Text(
                                 comment.writer,
                                 softWrap: true,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                                style: TextStyle(fontFamily: 'Binggrae',
+                                    color: Colors.black, fontSize: 20),
                               ),
                               Spacer(),
                               Text(
                                 comment.createdAt.toString().substring(5, 16),
                                 softWrap: true,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w200,
-                                    color: Colors.grey,
-                                fontSize: 12),
+                                style: TextStyle(fontFamily: 'Binggrae',
+                                    color: Colors.grey, fontSize: 20),
                               ),
                               Spacer(),
                                   authController.firestoreUser.value != null && comment.writer ==
@@ -380,7 +386,8 @@ class _MotivationDetailState extends State<MotivationDetail> {
                           Text(
                             comment.comment,
                             softWrap: true,
-                            style: TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
+                            style: TextStyle(fontFamily: 'Binggrae',
+                                color: Colors.black, fontSize: 20),
                           ),
                         ],
                       ),
@@ -403,7 +410,7 @@ class _MotivationDetailState extends State<MotivationDetail> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Text('로그인을 하셔야 댓글을 남기실 수 있습니다.'),
+            Text('로그인을 하셔야 댓글을 남기실 수 있습니다.', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold, fontSize: 20),),
             SizedBox(height: 5),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -414,7 +421,7 @@ class _MotivationDetailState extends State<MotivationDetail> {
                 // Get.toNamed('sign_in');
                 Get.to(SignIn());
               },
-              child: Text('로그인'),
+              child: Text('로그인', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold, fontSize: 20),),
             )
           ],
         ),
@@ -464,7 +471,7 @@ class _MotivationDetailState extends State<MotivationDetail> {
                     'TextInput.hide'); //to hide the keyboard - if any
                 Get.snackbar('댓글 작성', '작성이 완료되었습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
               },
-              child: Text('작성'),
+              child: Text('작성', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold, fontSize: 20),),
             )
           ],
         ),
@@ -566,7 +573,8 @@ class _MotivationDetailState extends State<MotivationDetail> {
           color: color,
         ),
         SizedBox(width: 5),
-        Text(text),
+        Text(text, style: TextStyle(fontFamily: 'Binggrae',
+            color: Colors.black, fontSize: 20)),
       ],
     );
   }
@@ -591,13 +599,13 @@ class _MotivationDetailState extends State<MotivationDetail> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text("삭제하시겠습니까?",
-            style: TextStyle(fontFamily: 'Nanum', fontSize: 18)),
+            style: TextStyle(fontFamily: 'Binggrae', fontSize: 18)),
         actions: <Widget>[
           TextButton(
             child: Text(
               "확인",
               style: TextStyle(
-                  fontFamily: 'Nanum', fontSize: 18, color: Colors.redAccent),
+                  fontFamily: 'Binggrae', fontSize: 18, color: Colors.redAccent),
             ),
             onPressed: () {
               noticeDbRef
@@ -612,7 +620,7 @@ class _MotivationDetailState extends State<MotivationDetail> {
             child: Text(
               "취소",
               style: TextStyle(
-                  fontFamily: 'Nanum', fontSize: 18, color: Colors.grey),
+                  fontFamily: 'Binggrae', fontSize: 18, color: Colors.grey),
             ),
             onPressed: () => Navigator.pop(context),
           ),
@@ -626,15 +634,15 @@ class _MotivationDetailState extends State<MotivationDetail> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('게시글 수정', style: TextStyle(fontFamily: 'Nanum', )),
+            title: Text('게시글 수정', style: TextStyle(fontFamily: 'Binggrae', )),
             content: Text("게시글을 수정하시겠습니까?",
-                style: TextStyle(fontFamily: 'Nanum',)),
+                style: TextStyle(fontFamily: 'Binggrae',)),
             actions: [
               TextButton(
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('확인',
-                      style: TextStyle(fontFamily: 'Nanum',
+                      style: TextStyle(fontFamily: 'Binggrae',
                           color: Colors.redAccent, fontSize: 20)),
                 ),
                 onPressed: () async {
@@ -645,7 +653,7 @@ class _MotivationDetailState extends State<MotivationDetail> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('취소',
-                      style: TextStyle(fontFamily: 'Nanum',
+                      style: TextStyle(fontFamily: 'Binggrae',
                           color: Colors.grey, fontSize: 20)),
                 ),
                 onPressed: () async {
@@ -662,15 +670,15 @@ class _MotivationDetailState extends State<MotivationDetail> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('게시글 삭제', style: TextStyle(fontFamily: 'Nanum', )),
+            title: Text('게시글 삭제', style: TextStyle(fontFamily: 'Binggrae', )),
             content: Text("게시글을 삭제하시겠습니까?",
-                style: TextStyle(fontFamily: 'Nanum', color: Colors.redAccent)),
+                style: TextStyle(fontFamily: 'Binggrae', color: Colors.redAccent)),
             actions: [
               TextButton(
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('확인',
-                      style: TextStyle(fontFamily: 'Nanum',
+                      style: TextStyle(fontFamily: 'Binggrae',
                           color: Colors.redAccent, fontSize: 20)),
                 ),
                 onPressed: () async {
@@ -694,7 +702,7 @@ class _MotivationDetailState extends State<MotivationDetail> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('취소',
-                      style: TextStyle(fontFamily: 'Nanum',
+                      style: TextStyle(fontFamily: 'Binggrae',
                           color: Colors.grey, fontSize: 20)),
                 ),
                 onPressed: () async {

@@ -232,14 +232,13 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                                     '...'
                                 : notice.title,
                             softWrap: true,
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 18,),
                           ),
 
                           Text(
                             notice.createdAt.toString().substring(0, 16),
                             softWrap: true,
-                            style: TextStyle(
-                                fontWeight: FontWeight.w300, fontSize: 14),
+                            style: TextStyle(fontFamily: 'Binggrae', fontSize: 18),
                           ),
 
                           /// 조회수
@@ -256,7 +255,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                                 Text(
                                   '${notice.like.toString()}',
                                   softWrap: true,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),
                                 ),
                                 Spacer(),
                                 Icon(
@@ -267,7 +266,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                                 Text(
                                   '${notice.read.toString()}',
                                   softWrap: true,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),
                                 ),
                                 Spacer(),
                                 Icon(
@@ -278,7 +277,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                                 Text(
                                   '${notice.share.toString()}',
                                   softWrap: true,
-                                  style: TextStyle(fontSize: 14),
+                                  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),
                                 ),
                               ],
                             ),

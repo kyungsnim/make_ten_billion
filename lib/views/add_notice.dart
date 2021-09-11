@@ -46,7 +46,7 @@ class _AddNoticeState extends State<AddNotice> {
       return GetBuilder<NoticeController>(builder: (_) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("새 게시글 작성", style: TextStyle(color: Colors.black)),
+            title: Text("새 게시글 작성", style: TextStyle(color: Colors.black, fontFamily: 'Binggrae', fontSize: 26, fontWeight: FontWeight.bold)),
             backgroundColor: Colors.white,
             elevation: 0,
             leading: _isLoading ? SizedBox() : InkWell(
@@ -77,7 +77,7 @@ class _AddNoticeState extends State<AddNotice> {
                                 child: Container(
                                     child: Text('카테고리',
                                         style: TextStyle(
-                                            fontFamily: 'SLEIGothic',
+                                            fontFamily: 'Binggrae', fontSize: 18,
                                             fontWeight:
                                             FontWeight.bold))),
                               ),
@@ -90,7 +90,8 @@ class _AddNoticeState extends State<AddNotice> {
                                 Expanded(
                                   flex: 1,
                                   child: DropdownButton(
-                                    hint: Text('카테고리를 선택해주세요'),
+                                    hint: Text('카테고리를 선택해주세요', style: TextStyle(
+                                        fontFamily: 'Binggrae', fontSize: 18,)),
                                       value: _category,
                                       icon: Icon(Icons.arrow_downward),
                                       underline: Container(
@@ -102,7 +103,7 @@ class _AddNoticeState extends State<AddNotice> {
                                           value: value,
                                           child: Text("$value",
                                               style: TextStyle(
-                                                  fontSize: 15)),
+                                                fontFamily: 'Binggrae', fontSize: 18,)),
                                         );
                                       }).toList(),
                                       onChanged: (value) {
@@ -129,7 +130,7 @@ class _AddNoticeState extends State<AddNotice> {
                                 child: Container(
                                     child: Text('제목',
                                         style: TextStyle(
-                                            fontFamily: 'SLEIGothic',
+                                            fontFamily: 'Binggrae', fontSize: 18,
                                             fontWeight:
                                             FontWeight.bold))),
                               ),
@@ -174,8 +175,7 @@ class _AddNoticeState extends State<AddNotice> {
                                       border: InputBorder.none,
                                       hintText: '제목 입력',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'SLEIGothic',
-                                          fontSize: 15)),
+                                          fontFamily: 'Binggrae', fontSize: 18,),),
                                   onChanged: (val) {
                                     _title = val;
                                   },
@@ -198,7 +198,8 @@ class _AddNoticeState extends State<AddNotice> {
                                 child: Container(
                                     child: Text('내용',
                                         style: TextStyle(
-                                            fontFamily: 'SLEIGothic',
+                                            fontFamily: 'Binggrae',
+                                            fontSize: 18,
                                             fontWeight:
                                             FontWeight.bold))),
                               ),
@@ -243,8 +244,7 @@ class _AddNoticeState extends State<AddNotice> {
                                       border: InputBorder.none,
                                       hintText: '내용 입력',
                                       hintStyle: TextStyle(
-                                          fontFamily: 'SLEIGothic',
-                                          fontSize: 15)),
+                                          fontFamily: 'Binggrae', fontSize: 18,),),
                                   onChanged: (val) {
                                     // noticeController.setDescription();
                                     _description = noticeController
@@ -271,7 +271,7 @@ class _AddNoticeState extends State<AddNotice> {
                                 Container(
                                     child: Text('사진 등록',
                                         style: TextStyle(
-                                            fontFamily: 'SLEIGothic',
+                                            fontFamily: 'Binggrae', fontSize: 18,
                                             fontWeight:
                                             FontWeight.bold))),
                               ],
@@ -282,7 +282,10 @@ class _AddNoticeState extends State<AddNotice> {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.grey, // background
                           onPrimary: Colors.white, // foreground
-                        ),child: Text('사진 선택'), onPressed: () {
+                        ),child: Text('사진 선택', style: TextStyle(
+                        fontFamily: 'Binggrae', fontSize: 18,
+                        fontWeight:
+                        FontWeight.bold)), onPressed: () {
                       selectGalleryImage();
                     },) : InkWell(
                       onTap: () {

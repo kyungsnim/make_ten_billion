@@ -27,7 +27,7 @@ class PrimaryButton extends StatelessWidget {
         height: MediaQuery.of(context).size.height * 0.06,
         child: Text(
           labelText.toUpperCase(),
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.05),
+          style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * 0.05),
         ),
       ),
     );

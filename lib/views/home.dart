@@ -17,16 +17,21 @@ class Home extends StatelessWidget {
           length: 4,
           child: Scaffold(
             appBar: AppBar(
-              title: Text('매일 읽는 100억 부자 되기 습관', style: TextStyle(color: Colors.black),),
+              title: Text('매일 읽는 100억 부자 되기 습관', style: TextStyle(fontFamily: 'Binggrae',
+                  fontWeight: FontWeight.bold, color: Colors.black, fontSize: 26),),
               bottom: TabBar(
                 labelColor: Colors.black,
                 indicatorColor: Colors.black,
                 physics: NeverScrollableScrollPhysics(),
                 tabs: [
-                  Tab(child: Text('부자되는\n방법', textAlign: TextAlign.center,), ),
-                  Tab(child: Text('부자\n동기부여', textAlign: TextAlign.center,),),
-                  Tab(child: Text('투자에 대한\n생각', textAlign: TextAlign.center,),),
-                  Tab(child: Text('공지사항', textAlign: TextAlign.center,),),
+                  Tab(child: Text('부자되는\n방법', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Binggrae',
+                    fontWeight: FontWeight.bold, fontSize: 14),), ),
+                  Tab(child: Text('부자\n동기부여', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Binggrae',
+                    fontWeight: FontWeight.bold, fontSize: 14)),),
+                  Tab(child: Text('투자에 대한\n생각', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Binggrae',
+                    fontWeight: FontWeight.bold, fontSize: 14)),),
+                  Tab(child: Text('공지사항', textAlign: TextAlign.center, style: TextStyle(fontFamily: 'Binggrae',
+                    fontWeight: FontWeight.bold, fontSize: 14)),),
                 ],
               ),
               // elevation: 0,
@@ -41,7 +46,7 @@ class Home extends StatelessWidget {
                       }
                     },
                     itemBuilder: (BuildContext ctx) => [
-                      authController.firestoreUser.value != null ? PopupMenuItem(child: Text('로그아웃'), value: '1') : PopupMenuItem(child: Text('로그인'), value: '1'),
+                      authController.firestoreUser.value != null ? PopupMenuItem(child: Text('로그아웃', style: TextStyle(fontFamily: 'Binggrae')), value: '1') : PopupMenuItem(child: Text('로그인'), value: '1'),
                     ])
               ],
             ),
@@ -72,13 +77,13 @@ class Home extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text("종료하시겠습니까?",
-            style: TextStyle(fontFamily: 'Nanum', fontSize: 18)),
+            style: TextStyle(fontFamily: 'Binggrae', fontSize: 18)),
         actions: <Widget>[
           TextButton(
             child: Text(
               "확인",
               style: TextStyle(
-                  fontFamily: 'Nanum', fontSize: 18, color: Colors.redAccent),
+                  fontFamily: 'Binggrae', fontSize: 18, color: Colors.redAccent),
             ),
             onPressed: () {
               SystemNavigator.pop();
@@ -88,7 +93,7 @@ class Home extends StatelessWidget {
             child: Text(
               "취소",
               style: TextStyle(
-                  fontFamily: 'Nanum', fontSize: 18, color: Colors.grey),
+                  fontFamily: 'Binggrae', fontSize: 18, color: Colors.grey),
             ),
             onPressed: () => Navigator.pop(context, false),
           ),
