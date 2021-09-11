@@ -58,8 +58,8 @@ class _NoticeBoardDetailState extends State<NoticeBoardDetail> {
             // Keep a reference to the ad so you can show it later.
             this.interstitial = ad;
 
-            if(DateTime.now().second % 5 == 0) {
-              interstitial!.show();
+            if (DateTime.now().second % 5 == 0) {
+              authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? interstitial!.show() : null;
             }
           },
           onAdFailedToLoad: (LoadAdError error) {
@@ -258,12 +258,12 @@ class _NoticeBoardDetailState extends State<NoticeBoardDetail> {
                     Divider(),
 
                     /// 댓글 내용
-                    Container(
+                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
                       height: 50.0,
                       child: AdWidget(
                         ad: banner!,
                       ),
-                    ),
+                    ) : SizedBox(),
                     _buildCommentBody(context),
                   ],
                 ),

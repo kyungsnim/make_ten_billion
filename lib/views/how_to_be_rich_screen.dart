@@ -147,14 +147,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
     return StreamBuilder<QuerySnapshot>(
         stream: stream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return Container(
-            width: 30,
-            height: 30,
-            child: LoadingIndicator(
-              indicatorType: Indicator.ballSpinFadeLoader,
-              colors: [Colors.redAccent],
-            ),
-          );
+          if (!snapshot.hasData) return LinearProgressIndicator();
           return _buildList(context, snapshot.data!.docs);
         });
   }
