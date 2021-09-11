@@ -695,6 +695,9 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                   // batch end
                   writeBatch.commit();
 
+                  deleteFireBaseStorageItem(detailNotice.imgUrl);
+                  // await FirebaseStorage.instance.refFromURL(detailNotice.imgUrl).delete();
+
                   Navigator.pop(context);
                   Get.offAll(() => Home());
                   Get.snackbar('게시글 삭제', "삭제가 완료되었습니다.",backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
@@ -714,5 +717,20 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
             ],
           );
         });
+  }
+
+  static void deleteFireBaseStorageItem(String fileUrl) {
+    String filePath = fileUrl
+        .replaceAll(
+        'https://firebasestorage.googleapis.com:443/v0/b/make-ten-billion-dce89.appspot.com/o/', '');
+
+    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+
+    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+
+    Reference storageReferance = FirebaseStorage.instance.ref();
+
+    storageReferance.child(filePath).delete().then((_) =>
+        print('Successfully deleted $filePath storage item'));
   }
 }

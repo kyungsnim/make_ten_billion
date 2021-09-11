@@ -53,8 +53,8 @@ class _MotivationScreenState extends State<MotivationScreen> {
             // Keep a reference to the ad so you can show it later.
             this.interstitial = ad;
 
-            if(DateTime.now().second % 5 == 0) {
-              interstitial!.show();
+            if (DateTime.now().second % 5 == 0) {
+              authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? interstitial!.show() : null;
             }
           },
           onAdFailedToLoad: (LoadAdError error) {
@@ -101,12 +101,12 @@ class _MotivationScreenState extends State<MotivationScreen> {
                   child: ListView(
                     controller: _scrollController,
                     children: [
-                      Container(
+                      authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
                         height: 50.0,
                         child: AdWidget(
                           ad: banner!,
                         ),
-                      ),
+                      ) : SizedBox(),
                       _buildBody(context),
                     ],
                   ),

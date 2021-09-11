@@ -66,7 +66,7 @@ class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
             this.interstitial = ad;
 
             if (DateTime.now().second % 5 == 0) {
-              interstitial!.show();
+              authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? interstitial!.show() : null;
             }
           },
           onAdFailedToLoad: (LoadAdError error) {
@@ -123,12 +123,12 @@ class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
                       //   },
                       //   child: Text('Send Message'),
                       // ),
-                      Container(
+                      authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
                         height: 50.0,
                         child: AdWidget(
                           ad: banner!,
                         ),
-                      ),
+                      ) : SizedBox(),
                       _buildBody(context),
                     ],
                   ),

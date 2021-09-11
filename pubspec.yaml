@@ -91,7 +91,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/icon/ㄹ
+    - assets/icon/
     - assets/splashscreen_image.png
     - fonts/BinggraeSamanco.ttf
     - fonts/BinggraeSamanco-Bold.ttf

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -692,6 +693,8 @@ class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
                   // batch end
                   writeBatch.commit();
 
+                  deleteFireBaseStorageItem(detailNotice.imgUrl);
+
                   Navigator.pop(context);
                   Get.offAll(() => Home());
                   Get.snackbar('게시글 삭제', "삭제가 완료되었습니다.",backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
@@ -711,5 +714,20 @@ class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
             ],
           );
         });
+  }
+
+  static void deleteFireBaseStorageItem(String fileUrl) {
+    String filePath = fileUrl
+        .replaceAll(
+        'https://firebasestorage.googleapis.com:443/v0/b/make-ten-billion-dce89.appspot.com/o/', '');
+
+    filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
+
+    filePath = filePath.replaceAll(new RegExp(r'(\?alt).*'), '');
+
+    Reference storageReferance = FirebaseStorage.instance.ref();
+
+    storageReferance.child(filePath).delete().then((_) =>
+        print('Successfully deleted $filePath storage item'));
   }
 }

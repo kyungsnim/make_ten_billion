@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:get/get.dart';
@@ -66,7 +67,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
             this.interstitial = ad;
 
             if (DateTime.now().second % 5 == 0) {
-              interstitial!.show();
+              authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? interstitial!.show() : null;
             }
           },
           onAdFailedToLoad: (LoadAdError error) {
@@ -123,12 +124,12 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                       //   },
                       //   child: Text('Send Message'),
                       // ),
-                      Container(
+                      authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
                         height: 50.0,
                         child: AdWidget(
                           ad: banner!,
                         ),
-                      ),
+                      ) : SizedBox(),
                       _buildBody(context),
                     ],
                   ),
@@ -146,7 +147,14 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
     return StreamBuilder<QuerySnapshot>(
         stream: stream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return LinearProgressIndicator();
+          if (!snapshot.hasData) return Container(
+            width: 30,
+            height: 30,
+            child: LoadingIndicator(
+              indicatorType: Indicator.ballSpinFadeLoader,
+              colors: [Colors.redAccent],
+            ),
+          );
           return _buildList(context, snapshot.data!.docs);
         });
   }

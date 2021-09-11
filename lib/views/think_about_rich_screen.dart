@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
@@ -211,13 +212,13 @@ class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> {
                           '...'
                           : notice.title,
                       softWrap: true,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 18,),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
 
                     Text(
                       notice.createdAt.toString().substring(0, 16),
                       softWrap: true,
-                      style: TextStyle(fontFamily: 'Binggrae', fontSize: 18),
+                      style: TextStyle(fontWeight: FontWeight.w300, fontSize: 14),
                     ),
 
                     /// 조회수
