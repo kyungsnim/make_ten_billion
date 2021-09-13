@@ -6,7 +6,7 @@ import 'package:make_ten_billion/views/views.dart';
 class AppRoutes {
   AppRoutes._();
   static final routes = [
-    GetPage(name: '/', page: () => Home()),
+    GetPage(name: '/', page: () => Home(0)),
     GetPage(name: '/signin', page: () => SignIn()),
     GetPage(name: '/signup', page: () => SignUp()),
     GetPage(name: '/notice', page: () => HowToBeRichScreen()),
@@ -20,4 +20,6 @@ class AppRoutes {
 
   static get detailNotice => null;
   static get collectionName => null;
+
+  static int? get index => null;
 }

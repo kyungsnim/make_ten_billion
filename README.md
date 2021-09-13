@@ -56,6 +56,9 @@
 - 게시글 삭제시 Storage image 삭제 로직 추가
 - 관리자는 광고 안나오도록 변경
 
+## 2021.09.13(월)
+- 동적링크 이용해서 카톡에 표현되게 만들어야 함
+
 # Complete list
 - 3개 페이지 만들기
 - 게시글 작성 화면 UI 변경 및 사진첨부 기능 추가
@@ -74,3 +77,10 @@
 1. Firebase.google.com 접속
 2. Storage > Usage > 우측 하단 사용량 및 결제에서 보기 > 세부정보 및 설정 탭
 3. 요금제 수 > 종량제 (Blaze) 요금제 선택 > 결제정보 등록
+
+# Dynamic link 구현하기
+- 처음에 main.dart 쪽에 하려고 했는데, MyApp initState 쪽에서 getDynamicLink를 처리하니 GetMaterialApp을 빌드하지 않아서 핫리로드시 오류가 생김
+- 때문에 home.dart에서 처리하는 걸로 방식 변경
+    - WidgetsBindingObserver 셋팅해주기 : Background 있을 때 Foreground 처리해주는..
+    - initState, dispose에 addObserver, removeObserver 추가
+    - getDynamicLink() 함수 추가

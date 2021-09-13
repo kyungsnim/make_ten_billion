@@ -124,7 +124,7 @@ class AuthController extends GetxController {
         passwordController.clear();
         // hideLoadingIndicator();
         if(result.user != null) {
-          Get.offAll(() => Home());
+          Get.offAll(() => Home(0));
         }
       });
     } on FirebaseAuthException catch (error) {
@@ -152,7 +152,7 @@ class AuthController extends GetxController {
             print(1111111);
             if(userCredential.user!.email != null) {
               print(22222222);
-              Get.offAll(() => Home());
+              Get.offAll(() => Home(0));
             }
       });
       emailController.clear();
@@ -274,7 +274,7 @@ class AuthController extends GetxController {
         }
       });
       await FlutterSecureStorage().write(key: "loginType", value: 'Google');
-      Get.offAll(() => Home());
+      Get.offAll(() => Home(0));
       update();
     } catch (e) {
       print(e.toString());
@@ -326,7 +326,7 @@ class AuthController extends GetxController {
     _auth.signOut().then((_) {
       firestoreUser.value = null;
       firebaseUser.value = null;
-      Get.offAll(() => Home());
+      Get.offAll(() => Home(0));
     });
   }
 

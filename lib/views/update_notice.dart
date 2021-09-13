@@ -385,19 +385,22 @@ class _UpdateNoticeState extends State<UpdateNotice> {
     switch(widget.collectionName) {
       case 'HowToBeRich':
         noticeController.updateHowToBeRichNotice(widget.detailNotice.id, noticeData);
+        Get.offAll(() => Home(0));
         break;
       case 'Motivation':
         noticeController.updateMotivationNotice(widget.detailNotice.id, noticeData);
+        Get.offAll(() => Home(1));
         break;
       case 'ThinkAboutRich':
         noticeController.updateThinkAboutRichNotice(widget.detailNotice.id, noticeData);
+        Get.offAll(() => Home(2));
         break;
       case 'NoticeBoard':
         noticeController.updateNoticeBoard(widget.detailNotice.id, noticeData);
+        Get.offAll(() => Home(3));
         break;
     }
 
-    Get.offAll(() => Home());
     Get.snackbar('게시글 수정', '수정이 완료되었습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
   }
 }

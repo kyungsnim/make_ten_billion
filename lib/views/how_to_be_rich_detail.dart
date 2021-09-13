@@ -2,15 +2,18 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:share/share.dart';
+import 'package:kakao_flutter_sdk/link.dart' as KakaoLink;
 
 import '../main.dart';
 import 'views.dart';
@@ -35,13 +38,29 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   var commentCount;
   ScrollController _scrollController = ScrollController();
   TextEditingController commentController = TextEditingController();
+  var defaultTemplate;
+  var defaultFeed;
 
   BannerAd? banner;
   InterstitialAd? interstitial;
 
+  String link = '';
+
   @override
   void initState() {
     super.initState();
+
+    defaultTemplate = KakaoLink.TextTemplate(widget.detailNotice.title, KakaoLink.Link());
+    defaultFeed = FeedTemplate(
+      Content(
+      widget.detailNotice.title,
+      Uri.parse(widget.detailNotice.imgUrl),
+      Link(mobileWebUrl: Uri.parse('https://developers.kakao.com'))),
+      social: Social(likeCount: widget.detailNotice.like),
+      buttons: [
+        Button('앱으로 보기', Link(webUrl: Uri.parse('https://developers.kakao.com')),)
+      ]
+      );
 
     banner = BannerAd(
       size: AdSize.banner,
@@ -232,10 +251,38 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                             // Text(commentCount == null ? '-' : commentCount.toString(),),
                             Spacer(),
                             InkWell(
-                              onTap: () {
-                                Share.share(widget.detailNotice.description, subject: widget.detailNotice.title);
-                                addShareCount(widget.detailNotice);
-                              },
+                              // onTap: () async {
+                              //   var uri = await KakaoLink.LinkClient.instance.defaultWithWeb(defaultFeed);
+                              //   await launchBrowserTab(uri);
+                              // }, //defaultTemplate,
+                              //     () async {
+                              //   // Share.share(widget.detailNotice.description, subject: widget.detailNotice.title);
+                              //   defaultTemplate();
+                                onTap: () async {
+                                  // try{
+                                  //   // KakaoLink.Link(androidExecParams: 'key1=value');
+                                  //   Uri uri = await KakaoLink.LinkClient.instance.customWithTalk(61447, templateArgs: {'key1': 'value1'});
+                                  //   await KakaoLink.launchBrowserTab(uri);
+                                  // } catch(e) {
+                                  //   print(e.toString());
+                                  // }
+                                  final DynamicLinkParameters parameters = DynamicLinkParameters(
+                                      uriPrefix: 'https://maketenbillion.page.link',
+                                      link: Uri.parse(
+                                          'https://maketenbillion.page.link/?route=HowToBeRichDetail?id=${widget.detailNotice.id}'),
+                                      androidParameters: AndroidParameters(
+                                          packageName: 'com.kyungsnim.make_ten_billion'
+                                      ),
+                                      iosParameters: IosParameters(
+                                          bundleId: 'com.kyungsnim.makeTenBillion'
+                                      ));
+                                  setState(() {
+                                    link = parameters.link.toString();
+                                  });
+                                  Share.share(link);
+                                },
+                              //   addShareCount(widget.detailNotice);
+                              // },
                               child: Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Row(children: [
@@ -699,7 +746,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                   // await FirebaseStorage.instance.refFromURL(detailNotice.imgUrl).delete();
 
                   Navigator.pop(context);
-                  Get.offAll(() => Home());
+                  Get.offAll(() => Home(0));
                   Get.snackbar('게시글 삭제', "삭제가 완료되었습니다.",backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
                 },
               ),
@@ -733,4 +780,6 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
     storageReferance.child(filePath).delete().then((_) =>
         print('Successfully deleted $filePath storage item'));
   }
+
+
 }

@@ -696,7 +696,7 @@ class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
                   deleteFireBaseStorageItem(detailNotice.imgUrl);
 
                   Navigator.pop(context);
-                  Get.offAll(() => Home());
+                  Get.offAll(() => Home(2));
                   Get.snackbar('게시글 삭제', "삭제가 완료되었습니다.",backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
                 },
               ),
