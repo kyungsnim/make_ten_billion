@@ -9,4 +9,6 @@ export 'notice_board_detail.dart';
 export 'how_to_be_rich_screen.dart';
 export 'how_to_be_rich_detail.dart';
 export 'motivation_screen.dart';
+export 'motivation_detail.dart';
 export 'think_about_rich_screen.dart';
+export 'think_about_rich_detail.dart';

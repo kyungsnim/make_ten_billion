@@ -3,9 +3,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:make_ten_billion/views/how_to_be_rich_detail.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:make_ten_billion/views/page_blue.dart';
 import 'package:make_ten_billion/views/page_red.dart';
+import 'package:make_ten_billion/views/views.dart';
 
 class CoreScreen extends StatefulWidget {
   const CoreScreen({Key? key, required this.data}) : super(key: key);
@@ -56,7 +57,22 @@ class _CoreScreenState extends State<CoreScreen> {
                 MaterialPageRoute(
                     builder: (context) => HowToBeRichDetail(notice)));
           });
-
+          break;
+        case 'Motivation':
+          FirebaseFirestore.instance.collection('Motivation').doc(widget.data['id']).get().then((notice) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MotivationDetail(notice)));
+          });
+          break;
+        case 'ThinkAboutRich':
+          FirebaseFirestore.instance.collection('ThinkAboutRich').doc(widget.data['id']).get().then((notice) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ThinkAboutRichDetail(notice)));
+          });
           break;
         // case 'detailNotice':
         //   Navigator.push(context, MaterialPageRoute(builder: (context) => HowToBeRichDetail()));

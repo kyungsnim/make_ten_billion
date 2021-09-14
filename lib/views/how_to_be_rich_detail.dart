@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:kakao_flutter_sdk/all.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
+import 'package:make_ten_billion/helpers/helpers.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:share/share.dart';
 import 'package:kakao_flutter_sdk/link.dart' as KakaoLink;
@@ -251,21 +253,8 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                             // Text(commentCount == null ? '-' : commentCount.toString(),),
                             Spacer(),
                             InkWell(
-                              // onTap: () async {
-                              //   var uri = await KakaoLink.LinkClient.instance.defaultWithWeb(defaultFeed);
-                              //   await launchBrowserTab(uri);
-                              // }, //defaultTemplate,
-                              //     () async {
-                              //   // Share.share(widget.detailNotice.description, subject: widget.detailNotice.title);
-                              //   defaultTemplate();
                                 onTap: () async {
-                                  // try{
-                                  //   // KakaoLink.Link(androidExecParams: 'key1=value');
-                                  //   Uri uri = await KakaoLink.LinkClient.instance.customWithTalk(61447, templateArgs: {'key1': 'value1'});
-                                  //   await KakaoLink.launchBrowserTab(uri);
-                                  // } catch(e) {
-                                  //   print(e.toString());
-                                  // }
+                                  /// Make dynamic links
                                   final DynamicLinkParameters parameters = DynamicLinkParameters(
                                       uriPrefix: 'https://maketenbillion.page.link',
                                       link: Uri.parse(
@@ -279,7 +268,16 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                                   setState(() {
                                     link = parameters.link.toString();
                                   });
+                                  print(link);
                                   Share.share(link);
+                                  // /// Kakao Link share
+                                  // KakaoShareManager().isKakaotalkInstalled().then((installed) {
+                                  //   if (installed) {
+                                  //     KakaoShareManager().shareMyCode(widget.detailNotice);
+                                  //   } else {
+                                  //     // show alert
+                                  //   }
+                                  // });
                                 },
                               //   addShareCount(widget.detailNotice);
                               // },
@@ -292,6 +290,20 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                                       color: Colors.black, fontSize: 20)),
                                 ],),
                               ),
+                            ),
+                            CupertinoButton(
+                              child: Text("나의 코드 공유", style: TextStyle(color: Colors.white)),
+                              color: Colors.black,
+                              borderRadius: BorderRadius.circular(12),
+                              onPressed: () {
+                                KakaoShareManager().isKakaotalkInstalled().then((installed) {
+                                  if (installed) {
+                                    KakaoShareManager().shareMyCode(widget.detailNotice);
+                                  } else {
+                                    // show alert
+                                  }
+                                });
+                              },
                             )
                           ],
                         )),
