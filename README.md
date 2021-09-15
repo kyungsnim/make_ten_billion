@@ -63,6 +63,9 @@
 - 동적링크 생성은 되고 카톡 공유는 되지만, 링크타고 앱 실행시 문제 있음
 - 초안 출시 검토 보냄 (광고 코드 바꿔야 함)
 
+## 2021.09.15(수)
+- 동적링크 생성 및 카카오톡 공유 완료
+
 # Complete list
 - 3개 페이지 만들기
 - 게시글 작성 화면 UI 변경 및 사진첨부 기능 추가
@@ -88,3 +91,6 @@
     - WidgetsBindingObserver 셋팅해주기 : Background 있을 때 Foreground 처리해주는..
     - initState, dispose에 addObserver, removeObserver 추가
     - getDynamicLink() 함수 추가
+
+# trouble shooting
+- android 출시하려면 appbundle이 필요 => flutter build appbundle

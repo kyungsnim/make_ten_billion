@@ -1,8 +1,6 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -162,7 +160,7 @@ class _NoticeBoardDetailState extends State<NoticeBoardDetail> {
                     //     : CachedNetworkImage(
                     //         imageUrl: widget.detailNotice.imgUrl),
                     /// 본문 내용
-                    Padding(
+                    widget.detailNotice.description == '' ? SizedBox() : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
@@ -175,6 +173,15 @@ class _NoticeBoardDetailState extends State<NoticeBoardDetail> {
                         ],
                       ),
                     ),
+                    /// 댓글 내용
+                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ?
+                    Container(
+                      color: Colors.white,
+                      height: 250.0,
+                      child: AdWidget(
+                        ad: banner!,
+                      ),
+                    ) : SizedBox(),
                     Divider(),
 
                     Padding(
@@ -257,13 +264,6 @@ class _NoticeBoardDetailState extends State<NoticeBoardDetail> {
 
                     Divider(),
 
-                    /// 댓글 내용
-                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
-                      height: 50.0,
-                      child: AdWidget(
-                        ad: banner!,
-                      ),
-                    ) : SizedBox(),
                     _buildCommentBody(context),
                   ],
                 ),

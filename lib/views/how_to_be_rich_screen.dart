@@ -1,15 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:http/http.dart' as http;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:get/get.dart';
@@ -104,42 +100,42 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NoticeController>(builder: (_) {
-      return GetBuilder<AuthController>(builder: (_) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: Scrollbar(
-                  child: ListView(
-                    controller: _scrollController,
-                    children: [
-                      // TextButton(
-                      //   onPressed: () {
-                      //     _firebaseMessaging.sendMessage(to: tmpToken, data: {
-                      //       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-                      //       'id': '1',
-                      //       'status': 'done'
-                      //     }, );
-                      //   },
-                      //   child: Text('Send Message'),
-                      // ),
-                      authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
-                        height: 50.0,
-                        child: AdWidget(
-                          ad: banner!,
-                        ),
-                      ) : SizedBox(),
-                      _buildBody(context),
-                    ],
+        return GetBuilder<AuthController>(builder: (_) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Scrollbar(
+                    child: ListView(
+                      controller: _scrollController,
+                      children: [
+                        // TextButton(
+                        //   onPressed: () {
+                        //     _firebaseMessaging.sendMessage(to: tmpToken, data: {
+                        //       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                        //       'id': '1',
+                        //       'status': 'done'
+                        //     }, );
+                        //   },
+                        //   child: Text('Send Message'),
+                        // ),
+                        authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
+                          height: 50.0,
+                          child: AdWidget(
+                            ad: banner!,
+                          ),
+                        ) : SizedBox(),
+                        _buildBody(context),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
+              ],
+            ),
+          );
+        });
       });
-    });
   }
 
   Widget _buildBody(BuildContext context) {

@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
+import 'package:make_ten_billion/helpers/kakao_link_with_dynamic_link.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:share/share.dart';
 
@@ -206,7 +207,7 @@ class _MotivationDetailState extends State<MotivationDetail> {
                     Divider(),
 
                     /// 본문 내용
-                    Padding(
+                    widget.detailNotice.description == '' ? SizedBox() : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
@@ -219,6 +220,16 @@ class _MotivationDetailState extends State<MotivationDetail> {
                         ],
                       ),
                     ),
+                    /// 광고
+                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ?
+                    Container(
+                      color: Colors.white,
+                      height: 250.0,
+                      child: AdWidget(
+                        ad: banner!,
+                      ),
+                    )
+                    : SizedBox(),
                     Divider(),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -233,8 +244,25 @@ class _MotivationDetailState extends State<MotivationDetail> {
                             // Text(commentCount == null ? '-' : commentCount.toString(),),
                             Spacer(),
                             InkWell(
-                              onTap: () {
-                                Share.share(widget.detailNotice.description, subject: widget.detailNotice.title);
+                              onTap: () async {
+                                /// Make dynamic links
+                                String link = await KakaoLinkWithDynamicLink()
+                                    .buildDynamicLink('Motivation',
+                                    widget.detailNotice.id);
+
+                                /// Kakao Link share
+                                KakaoLinkWithDynamicLink()
+                                    .isKakaotalkInstalled()
+                                    .then((installed) {
+                                  if (installed) {
+                                    KakaoLinkWithDynamicLink()
+                                        .shareMyCode(widget.detailNotice, link);
+                                  } else {
+                                    // show alert
+                                    Share.share(link);
+                                  }
+                                });
+                                // },
                                 addShareCount(widget.detailNotice);
                               },
                               child: Padding(
@@ -257,13 +285,6 @@ class _MotivationDetailState extends State<MotivationDetail> {
 
                     Divider(),
 
-                    /// 댓글 내용
-                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
-                      height: 50.0,
-                      child: AdWidget(
-                        ad: banner!,
-                      ),
-                    ) : SizedBox(),
                     _buildCommentBody(context),
                   ],
                 ),

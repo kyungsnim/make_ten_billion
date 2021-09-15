@@ -1,16 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:kakao_flutter_sdk/all.dart';
-import 'package:make_ten_billion/core_screen.dart';
-import 'package:make_ten_billion/views/think_about_rich_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'constants/app_routes.dart';
 import 'controller/controllers.dart';
-import 'views/views.dart';
 
 final String androidBannerId = 'ca-app-pub-2486335313636346/9631263349';
 final String androidInterstitialId = 'ca-app-pub-2486335313636346/2479531634';
@@ -27,9 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   MobileAds.instance.initialize();
-  KakaoContext.clientId = 'b6cb50231a2306a68657a2a6e07a1d3b';
-  // Get.put<ThemeController>(ThemeController());
-  // Get.put<LanguageController>(LanguageController());
+  KakaoContext.clientId = 'b6cb50231a2306a68657a2a6e07a13b';
   runApp(MyApp());
 }
 
@@ -39,14 +33,18 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    /// with WidgetsBindingObserver 과 함께 foreground 동적링크를 위한 추가
+    WidgetsBinding.instance!.addObserver(this);
   }
 
   @override
   void dispose() {
+    /// with WidgetsBindingObserver 과 함께 foreground 동적링크를 위한 추가
+    WidgetsBinding.instance!.removeObserver(this);
     super.dispose();
   }
 

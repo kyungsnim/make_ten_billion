@@ -205,7 +205,7 @@ class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
                     Divider(),
 
                     /// 본문 내용
-                    Padding(
+                    widget.detailNotice.description == '' ? SizedBox() : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         children: [
@@ -218,6 +218,15 @@ class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
                         ],
                       ),
                     ),
+                    /// 광고
+                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ?
+                    Container(
+                      color: Colors.white,
+                      height: 250.0,
+                      child: AdWidget(
+                        ad: banner!,
+                      ),
+                    ) : SizedBox(),
                     Divider(),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -256,13 +265,6 @@ class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
 
                     Divider(),
 
-                    /// 댓글 내용
-                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
-                      height: 50.0,
-                      child: AdWidget(
-                        ad: banner!,
-                      ),
-                    ) : SizedBox(),
                     _buildCommentBody(context),
                   ],
                 ),

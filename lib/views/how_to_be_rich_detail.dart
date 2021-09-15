@@ -2,20 +2,17 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:kakao_flutter_sdk/all.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
 import 'package:make_ten_billion/helpers/helpers.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:share/share.dart';
-import 'package:kakao_flutter_sdk/link.dart' as KakaoLink;
 
 import '../main.dart';
 import 'views.dart';
@@ -52,20 +49,8 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   void initState() {
     super.initState();
 
-    defaultTemplate = KakaoLink.TextTemplate(widget.detailNotice.title, KakaoLink.Link());
-    defaultFeed = FeedTemplate(
-      Content(
-      widget.detailNotice.title,
-      Uri.parse(widget.detailNotice.imgUrl),
-      Link(mobileWebUrl: Uri.parse('https://developers.kakao.com'))),
-      social: Social(likeCount: widget.detailNotice.like),
-      buttons: [
-        Button('앱으로 보기', Link(webUrl: Uri.parse('https://developers.kakao.com')),)
-      ]
-      );
-
     banner = BannerAd(
-      size: AdSize.banner,
+      size: AdSize.mediumRectangle,
       adUnitId: Platform.isIOS ? iOSTestId : androidTestId,
       listener: BannerAdListener(),
       request: AdRequest(),
@@ -80,7 +65,10 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
             this.interstitial = ad;
 
             if (DateTime.now().second % 5 == 0) {
-              authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? interstitial!.show() : null;
+              authController.firestoreUser.value != null &&
+                      authController.firestoreUser.value!.role != 'admin'
+                  ? interstitial!.show()
+                  : null;
             }
           },
           onAdFailedToLoad: (LoadAdError error) {
@@ -101,9 +89,9 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
       }
     });
 
-    if(authController.firestoreUser.value != null) {
-      if (widget.detailNotice.likeList.contains(
-          authController.firestoreUser.value!.email)) {
+    if (authController.firestoreUser.value != null) {
+      if (widget.detailNotice.likeList
+          .contains(authController.firestoreUser.value!.email)) {
         heartColor = Colors.redAccent;
         heartShape = Icons.favorite;
       } else {
@@ -137,8 +125,11 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
       return Scaffold(
         appBar: AppBar(
             title: Text(widget.detailNotice.title,
-                style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold,
-                    color: Colors.black, fontSize: 26)),
+                style: TextStyle(
+                    fontFamily: 'Binggrae',
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 26)),
             backgroundColor: Colors.white,
             elevation: 0,
             leading: InkWell(
@@ -161,10 +152,22 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                         }
                       },
                       itemBuilder: (BuildContext ctx) => [
-                            PopupMenuItem(child: Text('수정', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold,
-          color: Colors.black, fontSize: 16)), value: '1'),
-                            PopupMenuItem(child: Text('삭제', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold,
-      color: Colors.black, fontSize: 16)),value: '2'),
+                            PopupMenuItem(
+                                child: Text('수정',
+                                    style: TextStyle(
+                                        fontFamily: 'Binggrae',
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 16)),
+                                value: '1'),
+                            PopupMenuItem(
+                                child: Text('삭제',
+                                    style: TextStyle(
+                                        fontFamily: 'Binggrae',
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 16)),
+                                value: '2'),
                           ])
                   : SizedBox(),
             ]),
@@ -198,7 +201,13 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                           // Text('${_.count}'),
                           InkWell(
                             onTap: () {
-                              authController.firestoreUser.value != null ? addLikeList() : Get.snackbar('로그인 필요', '로그인을 하셔야 좋아요를 누를 수 있습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
+                              authController.firestoreUser.value != null
+                                  ? addLikeList()
+                                  : Get.snackbar(
+                                      '로그인 필요', '로그인을 하셔야 좋아요를 누를 수 있습니다.',
+                                      backgroundColor:
+                                          Colors.redAccent.withOpacity(0.8),
+                                      colorText: Colors.white);
                             },
                             child: summaryArea(
                               heartShape,
@@ -213,8 +222,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                               Colors.grey),
                           Spacer(),
                           InkWell(
-                            onTap: () {
-                            },
+                            onTap: () {},
                             child: summaryArea(
                                 Icons.share,
                                 (widget.detailNotice.share).toString(),
@@ -226,19 +234,36 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                     Divider(),
 
                     /// 본문 내용
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(widget.detailNotice.description,
-                                textAlign: TextAlign.start,
-                                style: TextStyle(fontFamily: 'Binggrae',
-                                    color: Colors.black, fontSize: 20)),
+                    widget.detailNotice.description == ''
+                        ? SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(widget.detailNotice.description,
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontFamily: 'Binggrae',
+                                          color: Colors.black,
+                                          fontSize: 20)),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
+
+                    /// 댓글 내용
+                    authController.firestoreUser.value != null &&
+                            authController.firestoreUser.value!.role != 'admin'
+                        ? Container(
+                            color: Colors.white,
+                            height: 250.0,
+                            child: AdWidget(
+                              ad: banner!,
+                            ),
+                          )
+                        : SizedBox(),
+
                     Divider(),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -246,65 +271,51 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                           children: [
                             Text(
                               '댓글',
-                              style: TextStyle(fontFamily: 'Binggrae',
-                                  color: Colors.black, fontSize: 20),
+                              style: TextStyle(
+                                  fontFamily: 'Binggrae',
+                                  color: Colors.black,
+                                  fontSize: 20),
                             ),
                             // SizedBox(width: 5),
                             // Text(commentCount == null ? '-' : commentCount.toString(),),
                             Spacer(),
                             InkWell(
-                                onTap: () async {
-                                  /// Make dynamic links
-                                  final DynamicLinkParameters parameters = DynamicLinkParameters(
-                                      uriPrefix: 'https://maketenbillion.page.link',
-                                      link: Uri.parse(
-                                          'https://maketenbillion.page.link/?route=HowToBeRichDetail?id=${widget.detailNotice.id}'),
-                                      androidParameters: AndroidParameters(
-                                          packageName: 'com.kyungsnim.make_ten_billion'
-                                      ),
-                                      iosParameters: IosParameters(
-                                          bundleId: 'com.kyungsnim.makeTenBillion'
-                                      ));
-                                  setState(() {
-                                    link = parameters.link.toString();
-                                  });
-                                  print(link);
-                                  Share.share(link);
-                                  // /// Kakao Link share
-                                  // KakaoShareManager().isKakaotalkInstalled().then((installed) {
-                                  //   if (installed) {
-                                  //     KakaoShareManager().shareMyCode(widget.detailNotice);
-                                  //   } else {
-                                  //     // show alert
-                                  //   }
-                                  // });
-                                },
-                              //   addShareCount(widget.detailNotice);
-                              // },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Row(children: [
-                                  Icon(Icons.share),
-                                  SizedBox(width: 5),
-                                  Text('공유하기', style: TextStyle(fontFamily: 'Binggrae',
-                                      color: Colors.black, fontSize: 20)),
-                                ],),
-                              ),
-                            ),
-                            CupertinoButton(
-                              child: Text("나의 코드 공유", style: TextStyle(color: Colors.white)),
-                              color: Colors.black,
-                              borderRadius: BorderRadius.circular(12),
-                              onPressed: () {
-                                KakaoShareManager().isKakaotalkInstalled().then((installed) {
+                              onTap: () async {
+                                /// Make dynamic links
+                                String link = await KakaoLinkWithDynamicLink()
+                                    .buildDynamicLink('HowToBeRichDetail',
+                                        widget.detailNotice.id);
+
+                                /// Kakao Link share
+                                KakaoLinkWithDynamicLink()
+                                    .isKakaotalkInstalled()
+                                    .then((installed) {
                                   if (installed) {
-                                    KakaoShareManager().shareMyCode(widget.detailNotice);
+                                    KakaoLinkWithDynamicLink()
+                                        .shareMyCode(widget.detailNotice, link);
                                   } else {
                                     // show alert
+                                    Share.share(link);
                                   }
                                 });
+                                // },
+                                addShareCount(widget.detailNotice);
                               },
-                            )
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.share),
+                                    SizedBox(width: 5),
+                                    Text('공유하기',
+                                        style: TextStyle(
+                                            fontFamily: 'Binggrae',
+                                            color: Colors.black,
+                                            fontSize: 20)),
+                                  ],
+                                ),
+                              ),
+                            ),
                           ],
                         )),
 
@@ -315,13 +326,6 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
 
                     Divider(),
 
-                    /// 댓글 내용
-                    authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
-                      height: 50.0,
-                      child: AdWidget(
-                        ad: banner!,
-                      ),
-                    ) : SizedBox(),
                     _buildCommentBody(context),
                   ],
                 ),
@@ -338,14 +342,15 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
     return StreamBuilder<QuerySnapshot>(
         stream: commentStream,
         builder: (context, snapshot) {
-          if (!snapshot.hasData) return Container(
-            width: 30,
-            height: 30,
-            child: LoadingIndicator(
-              indicatorType: Indicator.ballSpinFadeLoader,
-              colors: [Colors.redAccent],
-            ),
-          );
+          if (!snapshot.hasData)
+            return Container(
+              width: 30,
+              height: 30,
+              child: LoadingIndicator(
+                indicatorType: Indicator.ballSpinFadeLoader,
+                colors: [Colors.redAccent],
+              ),
+            );
           commentCount = snapshot.data!.docs.length;
           return _buildCommentList(context, snapshot.data!.docs);
         });
@@ -415,19 +420,25 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                               Text(
                                 comment.writer,
                                 softWrap: true,
-                                style: TextStyle(fontFamily: 'Binggrae',
-                                    color: Colors.black, fontSize: 20),
+                                style: TextStyle(
+                                    fontFamily: 'Binggrae',
+                                    color: Colors.black,
+                                    fontSize: 20),
                               ),
                               Spacer(),
                               Text(
                                 comment.createdAt.toString().substring(5, 16),
                                 softWrap: true,
-                                style: TextStyle(fontFamily: 'Binggrae',
-                                    color: Colors.grey, fontSize: 20),
+                                style: TextStyle(
+                                    fontFamily: 'Binggrae',
+                                    color: Colors.grey,
+                                    fontSize: 20),
                               ),
                               Spacer(),
-                                  authController.firestoreUser.value != null && comment.writer ==
-                                      authController.firestoreUser.value!.email
+                              authController.firestoreUser.value != null &&
+                                      comment.writer ==
+                                          authController
+                                              .firestoreUser.value!.email
                                   ? InkWell(
                                       onTap: () {
                                         checkDeleteCommentPopup(
@@ -445,8 +456,10 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                           Text(
                             comment.comment,
                             softWrap: true,
-                            style: TextStyle(fontFamily: 'Binggrae',
-                                color: Colors.black, fontSize: 20),
+                            style: TextStyle(
+                                fontFamily: 'Binggrae',
+                                color: Colors.black,
+                                fontSize: 20),
                           ),
                         ],
                       ),
@@ -469,7 +482,13 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            Text('로그인을 하셔야 댓글을 남기실 수 있습니다.', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold, fontSize: 20),),
+            Text(
+              '로그인을 하셔야 댓글을 남기실 수 있습니다.',
+              style: TextStyle(
+                  fontFamily: 'Binggrae',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
             SizedBox(height: 5),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -480,7 +499,13 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                 // Get.toNamed('sign_in');
                 Get.to(SignIn());
               },
-              child: Text('로그인', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold, fontSize: 20),),
+              child: Text(
+                '로그인',
+                style: TextStyle(
+                    fontFamily: 'Binggrae',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
             )
           ],
         ),
@@ -528,9 +553,17 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                 });
                 SystemChannels.textInput.invokeMethod(
                     'TextInput.hide'); //to hide the keyboard - if any
-                Get.snackbar('댓글 작성', '작성이 완료되었습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
+                Get.snackbar('댓글 작성', '작성이 완료되었습니다.',
+                    backgroundColor: Colors.redAccent.withOpacity(0.8),
+                    colorText: Colors.white);
               },
-              child: Text('작성', style: TextStyle(fontFamily: 'Binggrae', fontWeight: FontWeight.bold, fontSize: 20),),
+              child: Text(
+                '작성',
+                style: TextStyle(
+                    fontFamily: 'Binggrae',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+              ),
             )
           ],
         ),
@@ -632,8 +665,9 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
           color: color,
         ),
         SizedBox(width: 5),
-        Text(text, style: TextStyle(fontFamily: 'Binggrae',
-            color: Colors.black, fontSize: 20)),
+        Text(text,
+            style: TextStyle(
+                fontFamily: 'Binggrae', color: Colors.black, fontSize: 20)),
       ],
     );
   }
@@ -664,7 +698,9 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
             child: Text(
               "확인",
               style: TextStyle(
-                  fontFamily: 'Binggrae', fontSize: 18, color: Colors.redAccent),
+                  fontFamily: 'Binggrae',
+                  fontSize: 18,
+                  color: Colors.redAccent),
             ),
             onPressed: () {
               noticeDbRef
@@ -693,16 +729,23 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('게시글 수정', style: TextStyle(fontFamily: 'Binggrae', )),
+            title: Text('게시글 수정',
+                style: TextStyle(
+                  fontFamily: 'Binggrae',
+                )),
             content: Text("게시글을 수정하시겠습니까?",
-                style: TextStyle(fontFamily: 'Binggrae',)),
+                style: TextStyle(
+                  fontFamily: 'Binggrae',
+                )),
             actions: [
               TextButton(
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('확인',
-                      style: TextStyle(fontFamily: 'Binggrae',
-                          color: Colors.redAccent, fontSize: 20)),
+                      style: TextStyle(
+                          fontFamily: 'Binggrae',
+                          color: Colors.redAccent,
+                          fontSize: 20)),
                 ),
                 onPressed: () async {
                   Get.offAll(() => UpdateNotice(detailNotice, 'HowToBeRich'));
@@ -712,8 +755,10 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('취소',
-                      style: TextStyle(fontFamily: 'Binggrae',
-                          color: Colors.grey, fontSize: 20)),
+                      style: TextStyle(
+                          fontFamily: 'Binggrae',
+                          color: Colors.grey,
+                          fontSize: 20)),
                 ),
                 onPressed: () async {
                   Navigator.pop(context);
@@ -729,25 +774,31 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('게시글 삭제', style: TextStyle(fontFamily: 'Binggrae', )),
+            title: Text('게시글 삭제',
+                style: TextStyle(
+                  fontFamily: 'Binggrae',
+                )),
             content: Text("게시글을 삭제하시겠습니까?",
-                style: TextStyle(fontFamily: 'Binggrae', color: Colors.redAccent)),
+                style:
+                    TextStyle(fontFamily: 'Binggrae', color: Colors.redAccent)),
             actions: [
               TextButton(
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('확인',
-                      style: TextStyle(fontFamily: 'Binggrae',
-                          color: Colors.redAccent, fontSize: 20)),
+                      style: TextStyle(
+                          fontFamily: 'Binggrae',
+                          color: Colors.redAccent,
+                          fontSize: 20)),
                 ),
                 onPressed: () async {
-
                   // batch 생성
-                  WriteBatch writeBatch =
-                  FirebaseFirestore.instance.batch();
+                  WriteBatch writeBatch = FirebaseFirestore.instance.batch();
 
                   // Feed 게시글 삭제
-                  writeBatch.delete(FirebaseFirestore.instance.collection('HowToBeRich').doc(detailNotice.id));
+                  writeBatch.delete(FirebaseFirestore.instance
+                      .collection('HowToBeRich')
+                      .doc(detailNotice.id));
 
                   // 스토리지에 저장된 사진 삭제해주기e
 
@@ -759,15 +810,19 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
 
                   Navigator.pop(context);
                   Get.offAll(() => Home(0));
-                  Get.snackbar('게시글 삭제', "삭제가 완료되었습니다.",backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
+                  Get.snackbar('게시글 삭제', "삭제가 완료되었습니다.",
+                      backgroundColor: Colors.redAccent.withOpacity(0.8),
+                      colorText: Colors.white);
                 },
               ),
               TextButton(
                 child: Container(
                   padding: const EdgeInsets.all(16),
                   child: Text('취소',
-                      style: TextStyle(fontFamily: 'Binggrae',
-                          color: Colors.grey, fontSize: 20)),
+                      style: TextStyle(
+                          fontFamily: 'Binggrae',
+                          color: Colors.grey,
+                          fontSize: 20)),
                 ),
                 onPressed: () async {
                   Navigator.pop(context);
@@ -779,9 +834,9 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   }
 
   static void deleteFireBaseStorageItem(String fileUrl) {
-    String filePath = fileUrl
-        .replaceAll(
-        'https://firebasestorage.googleapis.com:443/v0/b/make-ten-billion-dce89.appspot.com/o/', '');
+    String filePath = fileUrl.replaceAll(
+        'https://firebasestorage.googleapis.com:443/v0/b/make-ten-billion-dce89.appspot.com/o/',
+        '');
 
     filePath = filePath.replaceAll(new RegExp(r'%2F'), '/');
 
@@ -789,9 +844,9 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
 
     Reference storageReferance = FirebaseStorage.instance.ref();
 
-    storageReferance.child(filePath).delete().then((_) =>
-        print('Successfully deleted $filePath storage item'));
+    storageReferance
+        .child(filePath)
+        .delete()
+        .then((_) => print('Successfully deleted $filePath storage item'));
   }
-
-
 }
