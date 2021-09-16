@@ -24,14 +24,14 @@ class NotificationService {
     return _token == '' ? await _fcm.getToken():_token;
   }
 
-  Future<String?> sendMessage() async {
+  Future<String?> sendMessage(String title, bodyMessage) async {
     String url = 'https://fcm.googleapis.com/fcm/send';
     var body = {
       "registration_ids": [await _fcm.getToken()],
       // "to": "/topics/all",
       "notification": {
-        "title": "테스트 메세지1233",
-        "body": "메세지 발송 테스트입니다."
+        "title": "$title",
+        "body": "$bodyMessage"
       },
       "data": {
         "msgId": "msg_12342"

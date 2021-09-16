@@ -207,6 +207,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               centerTitle: true,
               backgroundColor: Colors.white,
               actionsIconTheme: IconThemeData(color: Colors.black),
+              leading: InkWell(onTap: () {
+                Get.to(() => NotificationScreen());
+              },child: Icon(Icons.send, color: Colors.black,)),
               actions: [
                 PopupMenuButton(
                     onSelected: (selectedValue) {
@@ -223,7 +226,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                       style: TextStyle(fontFamily: 'Binggrae')),
                                   value: '1')
                               : PopupMenuItem(child: Text('로그인'), value: '1'),
-                        ])
+                    ])
               ],
             ),
             body: TabBarView(
@@ -235,25 +238,25 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               ],
             ),
             floatingActionButton:
-            FloatingActionButton(
-              child: Icon(Icons.add),
-              backgroundColor: Colors.blue,
-              onPressed: () async {
-                await NotificationService().sendMessage().then((value) {
-                  print(value);
-                });
-              },
-            )
-            // authController.firestoreUser.value != null &&
-            //         authController.firestoreUser.value!.role == 'admin'
-            //     ? FloatingActionButton(
-            //         child: Icon(Icons.add),
-            //         backgroundColor: Colors.redAccent,
-            //         onPressed: () {
-            //           Get.toNamed('add_notice');
-            //         },
-            //       )
-            //     : SizedBox(),
+            // FloatingActionButton(
+            //   child: Icon(Icons.add),
+            //   backgroundColor: Colors.blue,
+            //   onPressed: () async {
+            //     await NotificationService().sendMessage().then((value) {
+            //       print(value);
+            //     });
+            //   },
+            // )
+            authController.firestoreUser.value != null &&
+                    authController.firestoreUser.value!.role == 'admin'
+                ? FloatingActionButton(
+                    child: Icon(Icons.add),
+                    backgroundColor: Colors.redAccent,
+                    onPressed: () {
+                      Get.toNamed('add_notice');
+                    },
+                  )
+                : SizedBox(),
           ),
         ),
       ),

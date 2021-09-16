@@ -425,7 +425,9 @@ class _AddNoticeState extends State<AddNotice> {
     switch(_category) {
       case '부자되는 방법':
       noticeController.addHowToBeRichNotice(id, noticeData);
-
+        NotificationService().sendMessage(_title, id).then((value) {
+          print(value);
+        });
       break;
       case '부자 동기부여':
         noticeController.addMotivationNotice(id, noticeData);
