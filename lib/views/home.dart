@@ -5,8 +5,11 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:make_ten_billion/controller/auth_controller.dart';
+import 'package:provider/src/provider.dart';
 import 'package:get/get.dart';
 import 'package:make_ten_billion/models/models.dart';
+import 'package:make_ten_billion/notification/notification_bloc.dart';
+import 'package:make_ten_billion/notification/notification_service.dart';
 import 'views.dart';
 
 class Home extends StatefulWidget {
@@ -26,10 +29,24 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     super.initState();
     currentIndex = widget.index;
 
+    NotificationService().getToken().then((value) {
+      print('토큰값');
+      print(value);
+    });
+
     /// with WidgetsBindingObserver 과 함께 foreground 동적링크를 위한 추가
     WidgetsBinding.instance!.addObserver(this);
 
     initDynamicLinks();
+
+    Future.delayed(Duration(milliseconds: 0)).then((_){
+      NotificationService().initFirebasePushNotification(context)
+          .then((_) => context.read<NotificationBloc>().checkSubscription())
+          .then((_){
+      });
+    }).then((_){
+    });
+
   }
 
   @override
@@ -217,16 +234,26 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                 NoticeBoardScreen(),
               ],
             ),
-            floatingActionButton: authController.firestoreUser.value != null &&
-                    authController.firestoreUser.value!.role == 'admin'
-                ? FloatingActionButton(
-                    child: Icon(Icons.add),
-                    backgroundColor: Colors.redAccent,
-                    onPressed: () {
-                      Get.toNamed('add_notice');
-                    },
-                  )
-                : SizedBox(),
+            floatingActionButton:
+            FloatingActionButton(
+              child: Icon(Icons.add),
+              backgroundColor: Colors.blue,
+              onPressed: () async {
+                await NotificationService().sendMessage().then((value) {
+                  print(value);
+                });
+              },
+            )
+            // authController.firestoreUser.value != null &&
+            //         authController.firestoreUser.value!.role == 'admin'
+            //     ? FloatingActionButton(
+            //         child: Icon(Icons.add),
+            //         backgroundColor: Colors.redAccent,
+            //         onPressed: () {
+            //           Get.toNamed('add_notice');
+            //         },
+            //       )
+            //     : SizedBox(),
           ),
         ),
       ),

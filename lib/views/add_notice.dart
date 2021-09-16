@@ -2,6 +2,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
+import 'package:make_ten_billion/notification/notification_service.dart';
 import 'package:make_ten_billion/widgets/widgets.dart';
 import 'package:get/get.dart';
 
@@ -400,7 +401,7 @@ class _AddNoticeState extends State<AddNotice> {
     }
   }
 
-  uploadNotice({addImage: true}) {
+  uploadNotice({addImage: true}) async {
     var id = DateTime.now()
         .millisecondsSinceEpoch
         .toString();
@@ -424,6 +425,7 @@ class _AddNoticeState extends State<AddNotice> {
     switch(_category) {
       case '부자되는 방법':
       noticeController.addHowToBeRichNotice(id, noticeData);
+
       break;
       case '부자 동기부여':
         noticeController.addMotivationNotice(id, noticeData);
