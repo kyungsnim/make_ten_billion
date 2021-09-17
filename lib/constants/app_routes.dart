@@ -16,6 +16,8 @@ class AppRoutes {
     GetPage(name: '/how_to_be_rich_detail', page: () => HowToBeRichDetail(detailNotice)),
     GetPage(name: '/motivation_screen', page: () => MotivationScreen()),
     GetPage(name: '/think_about_rich_screen', page: () => ThinkAboutRichScreen()),
+    GetPage(name: '/setting_screen', page: () => SettingScreen()),
+    GetPage(name: '/think_about_rich_screen', page: () => ThinkAboutRichScreen()),
   ];
 
   static get detailNotice => null;

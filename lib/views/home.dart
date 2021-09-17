@@ -165,7 +165,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               bottom: TabBar(
                 labelColor: Colors.black,
                 indicatorColor: Colors.black,
-                physics: NeverScrollableScrollPhysics(),
+                // isScrollable: false,
+                // physics: NeverScrollableScrollPhysics(),
                 tabs: [
                   Tab(
                     child: Text(
@@ -207,26 +208,29 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               centerTitle: true,
               backgroundColor: Colors.white,
               actionsIconTheme: IconThemeData(color: Colors.black),
-              leading: InkWell(onTap: () {
-                Get.to(() => NotificationScreen());
-              },child: Icon(Icons.send, color: Colors.black,)),
+              // leading: InkWell(onTap: () {
+              //   Get.to(() => NotificationScreen());
+              // },child: Icon(Icons.send, color: Colors.black54,)),
               actions: [
-                PopupMenuButton(
-                    onSelected: (selectedValue) {
-                      if (selectedValue == '1') {
-                        authController.firestoreUser.value != null
-                            ? authController.signOut()
-                            : Get.offAll(() => SignIn());
-                      }
-                    },
-                    itemBuilder: (BuildContext ctx) => [
-                          authController.firestoreUser.value != null
-                              ? PopupMenuItem(
-                                  child: Text('로그아웃',
-                                      style: TextStyle(fontFamily: 'Binggrae')),
-                                  value: '1')
-                              : PopupMenuItem(child: Text('로그인'), value: '1'),
-                    ])
+                InkWell(
+                    onTap: () => Get.to(() => SettingScreen()), child: Icon(Icons.settings, color: Colors.black54)),
+                SizedBox(width: 15),
+                // PopupMenuButton(
+                //     onSelected: (selectedValue) {
+                //       if (selectedValue == '1') {
+                //         authController.firestoreUser.value != null
+                //             ? authController.signOut()
+                //             : Get.offAll(() => SignIn());
+                //       }
+                //     },
+                //     itemBuilder: (BuildContext ctx) => [
+                //           authController.firestoreUser.value != null
+                //               ? PopupMenuItem(
+                //                   child: Text('로그아웃',
+                //                       style: TextStyle(fontFamily: 'Binggrae')),
+                //                   value: '1')
+                //               : PopupMenuItem(child: Text('로그인'), value: '1'),
+                //     ])
               ],
             ),
             body: TabBarView(

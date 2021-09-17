@@ -13,3 +13,4 @@ export 'motivation_detail.dart';
 export 'think_about_rich_screen.dart';
 export 'think_about_rich_detail.dart';
 export 'notification_screen.dart';
+export 'setting_screen.dart';

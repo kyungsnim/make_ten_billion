@@ -1,9 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
+import 'package:make_ten_billion/models/models.dart';
+import 'package:make_ten_billion/views/views.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './constants.dart';
 import './notification_model.dart';
@@ -14,60 +20,55 @@ import './notification_dialog.dart';
 import 'package:http/http.dart' as http;
 
 class NotificationService {
-
-
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   final String subscriptionTopic = 'all';
   String? _token = '';
 
   Future<String?> getToken() async {
-    return _token == '' ? await _fcm.getToken():_token;
+    return _token == '' ? await _fcm.getToken() : _token;
   }
 
   Future<String?> sendMessage(String title, bodyMessage) async {
     String url = 'https://fcm.googleapis.com/fcm/send';
     var body = {
-      "registration_ids": [await _fcm.getToken()],
-      // "to": "/topics/all",
-      "notification": {
-        "title": "$title",
-        "body": "$bodyMessage"
-      },
-      "data": {
-        "msgId": "msg_12342"
-      }
+      // "registration_ids": [await _fcm.getToken()],
+      "to": "/topics/all",
+      "notification": {"title": "$title", "body": "$bodyMessage"},
+      "data": {"msgId": "msg_12342"}
     };
 
     print('Send Push Message ========================================');
     print(jsonEncode(body));
     http.Response response = await http.post(
       Uri.parse(url),
-      headers: <String, String> {
+      headers: <String, String>{
         'Content-Type': 'application/json',
-        'Authorization': 'key=AAAAxoH4z9Q:APA91bGY_5STcywZSPqKI7jfjtKnXnDHT6_uCSDqQe17UGRM8iD1WJQYZGQyJVLX2TiTJ_drXGRBM-BabcM_RqbrhHrtaMQwMMW_LIHmB6_HjdqMAIHsFzsA9706yUi8okSeNES34koy',
+        'Authorization':
+            'key=AAAAxoH4z9Q:APA91bGY_5STcywZSPqKI7jfjtKnXnDHT6_uCSDqQe17UGRM8iD1WJQYZGQyJVLX2TiTJ_drXGRBM-BabcM_RqbrhHrtaMQwMMW_LIHmB6_HjdqMAIHsFzsA9706yUi8okSeNES34koy',
       },
       body: jsonEncode(body),
     );
     return response.body;
   }
 
-  Future _handleIosNotificationPermissaion () async {
+  Future _handleIosNotificationPermissaion() async {
     NotificationSettings settings = await _fcm.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-        print('User granted permission');
-      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-        print('User granted provisional permission');
-      } else {
-        print('User declined or has not accepted permission');
-      }
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
   }
 
   Future initFirebasePushNotification(context) async {
@@ -84,16 +85,29 @@ class NotificationService {
     RemoteMessage? initialMessage = await _fcm.getInitialMessage();
     print('inittal message : $initialMessage');
     if (initialMessage != null) {
-      await saveNotificationData(initialMessage).then((value) => nextScreen(context, Notifications()));
+      await saveNotificationData(initialMessage)
+          .then((value) => nextScreen(context, Notifications()));
     }
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print('onMessage');
-      await saveNotificationData(message).then((value) => _handleOpenNotificationDialog(context, message));
+      await saveNotificationData(message)
+          .then((value) => _handleOpenNotificationDialog(context, message));
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      await saveNotificationData(message).then((value) => nextScreen(context, Notifications()));
+      await saveNotificationData(message).then((value) {
+        /// 알림 누르면 해당 게시글로 이동
+        FirebaseFirestore.instance
+            .collection('HowToBeRich')
+            .doc(message.notification!.body)
+            .get()
+            .then((data) {
+          NoticeModel detailNotice = NoticeModel.fromSnapshot(data);
+          Navigator.pop(context);
+          Get.to(() => HowToBeRichDetail(detailNotice));
+        });
+      });
     });
   }
 
@@ -128,7 +142,6 @@ class NotificationService {
     await bookmarkedList.delete(key);
   }
 
-
   Future deleteAllNotificationData() async {
     final bookmarkedList = Hive.box(Constants.notificationTag);
     await bookmarkedList.clear();
@@ -146,5 +159,19 @@ class NotificationService {
     }
 
     return _subscription;
+  }
+
+  void turnOnFcmSubscribtion() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool('subscribed', true);
+    _fcm.subscribeToTopic(subscriptionTopic);
+    print('subscribed');
+  }
+
+  void turnOffFcmSubscribtion() async {
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.setBool('subscribed', false);
+    _fcm.unsubscribeFromTopic(subscriptionTopic);
+    print('unsubscribed');
   }
 }

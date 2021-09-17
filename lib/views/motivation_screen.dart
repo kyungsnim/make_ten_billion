@@ -38,29 +38,29 @@ class _MotivationScreenState extends State<MotivationScreen> {
   void initState() {
     super.initState();
 
-    banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: Platform.isIOS ? iOSTestId : androidTestId,
-      listener: BannerAdListener(),
-      request: AdRequest(),
-    )..load();
-
-    InterstitialAd.load(
-        adUnitId: iOSInterstitialTestId,
-        request: AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            // Keep a reference to the ad so you can show it later.
-            this.interstitial = ad;
-
-            if (DateTime.now().second % 5 == 0) {
-              authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? interstitial!.show() : null;
-            }
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error');
-          },
-        ));
+    // banner = BannerAd(
+    //   size: AdSize.banner,
+    //   adUnitId: Platform.isIOS ? iOSTestId : androidTestId,
+    //   listener: BannerAdListener(),
+    //   request: AdRequest(),
+    // )..load();
+    //
+    // InterstitialAd.load(
+    //     adUnitId: iOSInterstitialTestId,
+    //     request: AdRequest(),
+    //     adLoadCallback: InterstitialAdLoadCallback(
+    //       onAdLoaded: (InterstitialAd ad) {
+    //         // Keep a reference to the ad so you can show it later.
+    //         this.interstitial = ad;
+    //
+    //         if (DateTime.now().second % 5 == 0) {
+    //           interstitial!.show();
+    //         }
+    //       },
+    //       onAdFailedToLoad: (LoadAdError error) {
+    //         print('InterstitialAd failed to load: $error');
+    //       },
+    //     ));
 
     stream = newStream();
 
@@ -101,12 +101,12 @@ class _MotivationScreenState extends State<MotivationScreen> {
                   child: ListView(
                     controller: _scrollController,
                     children: [
-                      authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? Container(
-                        height: 50.0,
-                        child: AdWidget(
-                          ad: banner!,
-                        ),
-                      ) : SizedBox(),
+                      // Container(
+                      //   height: 50.0,
+                      //   child: AdWidget(
+                      //     ad: banner!,
+                      //   ),
+                      // ),
                       _buildBody(context),
                     ],
                   ),

@@ -10,6 +10,7 @@ import 'package:make_ten_billion/views/sign_in.dart';
 import 'package:make_ten_billion/widgets/loading.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
   static AuthController to = Get.find();
@@ -319,7 +320,10 @@ class AuthController extends GetxController {
   }
 
   // Sign out
-  signOut() {
+  signOut() async {
+    /// 알림 구독설정해놓은 정보 삭제처리
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    sp.clear();
     nameController.clear();
     emailController.clear();
     passwordController.clear();

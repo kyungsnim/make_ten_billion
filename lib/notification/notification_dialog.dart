@@ -46,10 +46,10 @@ void openNotificationDialog(context, NotificationModel notificationModel) {
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600,
-                        color: Theme.of(context).colorScheme.primary
+                        color: Colors.black87
                     ),
                   ),
-                  // Text(
+                  // Text(s
                   //     HtmlUnescape().convert(
                   //         parse(notificationModel.body).documentElement!.text),
                   //     overflow: TextOverflow.ellipsis,
