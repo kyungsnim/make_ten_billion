@@ -49,7 +49,7 @@ class NotificationScreen extends StatelessWidget {
                       // if (_formKey.currentState!.validate()) {
                       SystemChannels.textInput.invokeMethod(
                           'TextInput.hide'); //to hide the keyboard - if any
-                      NotificationService().sendMessage(titleController.text, contentController.text);
+                      NotificationService().sendMessage(titleController.text, contentController.text, imgUrl: '');
                       // }
                       Get.back();
                     }),

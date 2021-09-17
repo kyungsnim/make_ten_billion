@@ -424,10 +424,7 @@ class _AddNoticeState extends State<AddNotice> {
 
     switch(_category) {
       case '부자되는 방법':
-      noticeController.addHowToBeRichNotice(id, noticeData);
-        NotificationService().sendMessage(_title, id).then((value) {
-          print(value);
-        });
+        noticeController.addHowToBeRichNotice(id, noticeData);
       break;
       case '부자 동기부여':
         noticeController.addMotivationNotice(id, noticeData);
@@ -439,6 +436,12 @@ class _AddNoticeState extends State<AddNotice> {
         noticeController.addNoticeBoard(id, noticeData);
         break;
     }
+
+    /// push notification
+    NotificationService().sendMessage(_title, id, imgUrl: noticeController.imgUrl).then((value) {
+      print(value);
+    });
+
     Get.back();
     Get.snackbar('게시글 작성', '작성이 완료되었습니다.',backgroundColor: Colors.redAccent.withOpacity(0.8), colorText: Colors.white);
   }

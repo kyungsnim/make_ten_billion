@@ -16,6 +16,7 @@ import './notification_model.dart';
 import './notifications.dart';
 import './next_screen.dart';
 import './notification_dialog.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -28,12 +29,16 @@ class NotificationService {
     return _token == '' ? await _fcm.getToken() : _token;
   }
 
-  Future<String?> sendMessage(String title, bodyMessage) async {
+  Future<String?> sendMessage(String title, bodyMessage,
+      {required String imgUrl}) async {
     String url = 'https://fcm.googleapis.com/fcm/send';
     var body = {
       // "registration_ids": [await _fcm.getToken()],
       "to": "/topics/all",
-      "notification": {"title": "$title", "body": "$bodyMessage"},
+      "notification": {
+        "title": "$title",
+        "body": "$bodyMessage",
+      },
       "data": {"msgId": "msg_12342"}
     };
 
@@ -54,7 +59,7 @@ class NotificationService {
   Future _handleIosNotificationPermissaion() async {
     NotificationSettings settings = await _fcm.requestPermission(
       alert: true,
-      announcement: false,
+      announcement: true,
       badge: true,
       carPlay: false,
       criticalAlert: false,
@@ -85,22 +90,53 @@ class NotificationService {
     RemoteMessage? initialMessage = await _fcm.getInitialMessage();
     print('inittal message : $initialMessage');
     if (initialMessage != null) {
-      await saveNotificationData(initialMessage)
-          .then((value) => nextScreen(context, Notifications()));
+      var noticeId;
+
+      if (Platform.isIOS) {
+        noticeId = initialMessage.data['aps']['alert']['body'];
+      } else if (Platform.isAndroid) {
+        noticeId = initialMessage.notification!.body;
+      }
+      await saveNotificationData(initialMessage).then((value) {
+        print('>>>> ${initialMessage.notification!.body}');
+
+        /// 알림 누르면 해당 게시글로 이동
+        FirebaseFirestore.instance
+            .collection('HowToBeRich')
+            .doc(noticeId!)
+            .get()
+            .then((data) {
+          NoticeModel detailNotice = NoticeModel.fromSnapshot(data);
+          Navigator.pop(context);
+          Get.to(() => HowToBeRichDetail(detailNotice));
+        });
+      });
     }
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      Vibrate.vibrate();
+
       print('onMessage');
       await saveNotificationData(message)
           .then((value) => _handleOpenNotificationDialog(context, message));
     });
 
+    /// 알림을 눌러서 앱 실행하는 경우
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      var noticeId;
+
+      if (Platform.isIOS) {
+        noticeId = message.data['aps']['alert']['body'];
+      } else if (Platform.isAndroid) {
+        noticeId = message.notification!.body;
+      }
       await saveNotificationData(message).then((value) {
+        print('>>>> ${message.notification!.body}');
+
         /// 알림 누르면 해당 게시글로 이동
         FirebaseFirestore.instance
             .collection('HowToBeRich')
-            .doc(message.notification!.body)
+            .doc(noticeId!)
             .get()
             .then((data) {
           NoticeModel detailNotice = NoticeModel.fromSnapshot(data);

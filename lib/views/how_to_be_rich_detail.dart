@@ -291,6 +291,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                                     .isKakaotalkInstalled()
                                     .then((installed) {
                                   if (installed) {
+                                    print(1);
                                     KakaoLinkWithDynamicLink()
                                         .shareMyCode(widget.detailNotice, link);
                                   } else {

@@ -24,6 +24,7 @@
             android:showWhenLocked="true"
             android:turnScreenOn="true">
             <!-- showWhenLocked, turnScreenOn : 잠겨 있는 경우에도 활성화될 수 있도록 설정-->
+
             <!-- Specifies an Android theme to apply to this Activity as soon as
                  the Android process has started. This theme is visible to the user
                  while the Flutter UI initializes. After that, this theme continues
@@ -68,6 +69,7 @@
 <!--            android:value="ca-app-pub-2486335313636346~8905339181"/> -->
 
        <!-- for local notifications -->
+       <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
        <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
