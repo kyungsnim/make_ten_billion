@@ -130,6 +130,9 @@ class NotificationService {
       } else if (Platform.isAndroid) {
         noticeId = message.notification!.body;
       }
+
+      Navigator.pop(context);
+
       await saveNotificationData(message).then((value) {
         print('>>>> ${message.notification!.body}');
 
@@ -140,7 +143,6 @@ class NotificationService {
             .get()
             .then((data) {
           NoticeModel detailNotice = NoticeModel.fromSnapshot(data);
-          Navigator.pop(context);
           Get.to(() => HowToBeRichDetail(detailNotice));
         });
       });

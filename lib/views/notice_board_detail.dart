@@ -41,29 +41,37 @@ class _NoticeBoardDetailState extends State<NoticeBoardDetail> {
   void initState() {
     super.initState();
 
-    banner = BannerAd(
-      size: AdSize.banner,
-      adUnitId: Platform.isIOS ? iOSTestId : androidTestId,
-      listener: BannerAdListener(),
-      request: AdRequest(),
-    )..load();
-
-    InterstitialAd.load(
-        adUnitId: iOSInterstitialTestId,
+    if(authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin')) {
+      banner = BannerAd(
+        size: AdSize.mediumRectangle,
+        adUnitId: Platform.isIOS ? iOSBannerId : androidBannerId,
+        listener: BannerAdListener(),
         request: AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (InterstitialAd ad) {
-            // Keep a reference to the ad so you can show it later.
-            this.interstitial = ad;
+      )
+        ..load();
 
-            if (DateTime.now().second % 5 == 0) {
-              authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ? interstitial!.show() : null;
-            }
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error');
-          },
-        ));
+      InterstitialAd.load(
+          adUnitId: iOSInterstitialId,
+          request: AdRequest(),
+          adLoadCallback: InterstitialAdLoadCallback(
+            onAdLoaded: (InterstitialAd ad) {
+              // Keep a reference to the ad so you can show it later.
+              this.interstitial = ad;
+
+              if (DateTime
+                  .now()
+                  .second % 5 == 0) {
+                authController.firestoreUser.value != null &&
+                    authController.firestoreUser.value!.role != 'admin'
+                    ? interstitial!.show()
+                    : null;
+              }
+            },
+            onAdFailedToLoad: (LoadAdError error) {
+              print('InterstitialAd failed to load: $error');
+            },
+          ));
+    }
 
     /// 댓글 목록 불러오기
     commentStream = newStream();

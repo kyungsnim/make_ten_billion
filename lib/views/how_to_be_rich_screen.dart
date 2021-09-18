@@ -46,35 +46,6 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
     // }
     // getToken();
 
-    // if(authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin') {
-    //   banner = BannerAd(
-    //     size: AdSize.banner,
-    //     adUnitId: Platform.isIOS ? iOSTestId : androidTestId,
-    //     listener: BannerAdListener(),
-    //     request: AdRequest(),
-    //   )
-    //     ..load();
-    //
-    //   InterstitialAd.load(
-    //       adUnitId: iOSInterstitialTestId,
-    //       request: AdRequest(),
-    //       adLoadCallback: InterstitialAdLoadCallback(
-    //         onAdLoaded: (InterstitialAd ad) {
-    //           // Keep a reference to the ad so you can show it later.
-    //           this.interstitial = ad;
-    //
-    //           if (DateTime
-    //               .now()
-    //               .second % 5 == 0) {
-    //             interstitial!.show();
-    //           }
-    //         },
-    //         onAdFailedToLoad: (LoadAdError error) {
-    //           print('InterstitialAd failed to load: $error');
-    //         },
-    //       ));
-    // }
-
     stream = newStream();
 
     _scrollController.addListener(() {
@@ -91,6 +62,12 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    if(banner != null) {
+      banner!.dispose();
+    }
+    if(interstitial != null) {
+      interstitial!.dispose();
+    }
     super.dispose();
   }
 
@@ -102,7 +79,41 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+  @override
   Widget build(BuildContext context) {
+
+    if(authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin')) {
+      banner = BannerAd(
+        size: AdSize.banner,
+        adUnitId: Platform.isIOS ? iOSBannerId : androidBannerId, //iOSTestId : androidTestId,
+        listener: BannerAdListener(),
+        request: AdRequest(),
+      )
+        ..load();
+
+      InterstitialAd.load(
+          adUnitId: iOSInterstitialId,
+          request: AdRequest(),
+          adLoadCallback: InterstitialAdLoadCallback(
+            onAdLoaded: (InterstitialAd ad) {
+              // Keep a reference to the ad so you can show it later.
+              this.interstitial = ad;
+
+              if (DateTime
+                  .now()
+                  .second % 5 == 0) {
+                interstitial!.show();
+              }
+            },
+            onAdFailedToLoad: (LoadAdError error) {
+              print('InterstitialAd failed to load: $error');
+            },
+          ));
+    }
+
     return GetBuilder<NoticeController>(builder: (_) {
         return GetBuilder<AuthController>(builder: (_) {
           return Padding(
@@ -124,14 +135,14 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                         //   },
                         //   child: Text('Send Message'),
                         // ),
-                        // authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin' ?
-                        // Container(
-                        //   height: 50.0,
-                        //   child: AdWidget(
-                        //     ad: banner!,
-                        //   ),
-                        // ),
-                            // : SizedBox(),
+            authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin') ?
+                        Container(
+                          height: 50.0,
+                          child: AdWidget(
+                            ad: banner!,
+                          ),
+                        )
+                            : SizedBox(),
                         _buildBody(context),
                       ],
                     ),
