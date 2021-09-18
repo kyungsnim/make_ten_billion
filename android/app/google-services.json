@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "852584091604-kpabhq515ulihq7evf2ujn0vpqn2hl6q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyungsnim.make_ten_billion",
+            "certificate_hash": "592ba530943e159e0a10ee3f22f08f97ed205863"
+          }
+        },
+        {
+          "client_id": "852584091604-mc1pk6ep72bjuqv2t0pp2d8967ugotgb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyungsnim.make_ten_billion",
+            "certificate_hash": "7bacbec310890157ae0598d22d8c8186c214e2d6"
+          }
+        },
+        {
           "client_id": "852584091604-ucn5ek2i9u1jlve3oef60hc1aij2ued9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

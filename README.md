@@ -79,6 +79,7 @@
 - 알림 구현 완료 (하지만 안드 배포버전에서 보냈을 때 개발 버전에는 안오고 있음)
 - iOS 푸쉬 알림시 진동 안울리는 문제 해결 (AppDelegate.swift 파일에 설정을 위한 소스 추가)
 - 실제 광고코드로 변환 후 appbundle 재생성
+- build.gradle 설정 변경 (key.jks), google-service.json 파일 새로 받음
 
 # Complete list
 - 3개 페이지 만들기
