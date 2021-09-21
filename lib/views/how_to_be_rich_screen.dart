@@ -18,7 +18,7 @@ class HowToBeRichScreen extends StatefulWidget {
   _HowToBeRichScreenState createState() => _HowToBeRichScreenState();
 }
 
-class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
+class _HowToBeRichScreenState extends State<HowToBeRichScreen> with AutomaticKeepAliveClientMixin<HowToBeRichScreen> {
   var _lastRow = 0;
   final FETCH_ROW = 5;
   var stream;
@@ -82,6 +82,7 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
 
@@ -125,6 +126,14 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                     child: ListView(
                       controller: _scrollController,
                       children: [
+                        authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin') ?
+                        Container(
+                          height: 50.0,
+                          child: AdWidget(
+                            ad: banner!,
+                          ),
+                        )
+                            : SizedBox(),
                         // TextButton(
                         //   onPressed: () {
                         //     _firebaseMessaging.sendMessage(to: tmpToken, data: {
@@ -135,14 +144,6 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
                         //   },
                         //   child: Text('Send Message'),
                         // ),
-            authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin') ?
-                        Container(
-                          height: 50.0,
-                          child: AdWidget(
-                            ad: banner!,
-                          ),
-                        )
-                            : SizedBox(),
                         _buildBody(context),
                       ],
                     ),
@@ -317,46 +318,8 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> {
       notice.read++;
     });
   }
-  //
-  // String? tmpToken;
-  // void getToken() async {
-  //   _firebaseMessaging.getToken().then((value) {
-  //     print('>>>> token: $value');
-  //     tmpToken = value;
-  //     // sendAndRetrieveMessage(value!);
-  //   });
-  // }
-  //
-  // final String serverToken = 'AAAAxoH4z9Q:APA91bGY_5STcywZSPqKI7jfjtKnXnDHT6_uCSDqQe17UGRM8iD1WJQYZGQyJVLX2TiTJ_drXGRBM-BabcM_RqbrhHrtaMQwMMW_LIHmB6_HjdqMAIHsFzsA9706yUi8okSeNES34koy';
-  // Future<Map<String, dynamic>> sendAndRetrieveMessage(String token) async {
-  //   await http.post(
-  //     Uri.parse('https://fcm.googleapis.com/fcm/send'),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json',
-  //       'Authorization': 'key=$serverToken',
-  //     },
-  //     body: jsonEncode(
-  //       <String, dynamic>{
-  //         'notification': <String, dynamic>{
-  //           'body': 'hello_world',
-  //           'title': 'FlutterCloudMessage'
-  //         },
-  //         'priority': 'high',
-  //         'data': <String, dynamic>{
-  //           'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-  //           'id': '1',
-  //           'status': 'done'
-  //         },
-  //         'to': token,
-  //       }
-  //     )
-  //   );
-  //
-  //   final Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
-  //   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-  //     print('Message data: ${message.data}');
-  //     completer.complete(message.data);
-  //   });
-  //   return completer.future;
-  // }
+
+  /// 다른탭 보고 온 후에 이전 상태 유지
+  @override
+  bool get wantKeepAlive => true;
 }

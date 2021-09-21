@@ -21,7 +21,7 @@ class NoticeBoardScreen extends StatefulWidget {
   _NoticeBoardScreenState createState() => _NoticeBoardScreenState();
 }
 
-class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
+class _NoticeBoardScreenState extends State<NoticeBoardScreen> with AutomaticKeepAliveClientMixin<NoticeBoardScreen> {
   var _lastRow = 0;
   final FETCH_ROW = 5;
   var stream;
@@ -317,6 +317,9 @@ class _NoticeBoardScreenState extends State<NoticeBoardScreen> {
       notice.read++;
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   // String? tmpToken;
   // void getToken() async {

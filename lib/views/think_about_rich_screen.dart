@@ -20,7 +20,7 @@ class ThinkAboutRichScreen extends StatefulWidget {
   _ThinkAboutRichScreenState createState() => _ThinkAboutRichScreenState();
 }
 
-class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> {
+class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> with AutomaticKeepAliveClientMixin<ThinkAboutRichScreen> {
   var _lastRow = 0;
   final FETCH_ROW = 5;
   var stream;
@@ -308,4 +308,7 @@ class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> {
       notice.read++;
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

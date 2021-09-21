@@ -164,8 +164,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               bottom: TabBar(
                 labelColor: Colors.black,
                 indicatorColor: Colors.black,
-                // isScrollable: false,
-                // physics: NeverScrollableScrollPhysics(),
+                // isScrollable: true,
+                physics: NeverScrollableScrollPhysics(),
                 tabs: [
                   Tab(
                     child: Text(
@@ -233,6 +233,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               ],
             ),
             body: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 HowToBeRichScreen(),
                 MotivationScreen(),

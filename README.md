@@ -81,6 +81,9 @@
 - 실제 광고코드로 변환 후 appbundle 재생성
 - build.gradle 설정 변경 (key.jks), google-service.json 파일 새로 받음
 
+## 2021.09.21(화)
+- 애드몹 추가한 경우 스크롤이 안 되고 있음
+
 # Complete list
 - 3개 페이지 만들기
 - 게시글 작성 화면 UI 변경 및 사진첨부 기능 추가

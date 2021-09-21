@@ -34,7 +34,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> _messageHandler(RemoteMessage message) async {
 
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   Vibrate.vibrate();
 

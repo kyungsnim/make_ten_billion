@@ -18,7 +18,7 @@ class MotivationScreen extends StatefulWidget {
   _MotivationScreenState createState() => _MotivationScreenState();
 }
 
-class _MotivationScreenState extends State<MotivationScreen> {
+class _MotivationScreenState extends State<MotivationScreen> with AutomaticKeepAliveClientMixin<MotivationScreen> {
   var _lastRow = 0;
   final FETCH_ROW = 5;
   var stream;
@@ -295,4 +295,7 @@ class _MotivationScreenState extends State<MotivationScreen> {
       notice.read++;
     });
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
