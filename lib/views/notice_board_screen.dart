@@ -1,12 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:http/http.dart' as http;
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
@@ -23,7 +18,7 @@ class NoticeBoardScreen extends StatefulWidget {
 
 class _NoticeBoardScreenState extends State<NoticeBoardScreen> with AutomaticKeepAliveClientMixin<NoticeBoardScreen> {
   var _lastRow = 0;
-  final FETCH_ROW = 5;
+  final FETCH_ROW = 10;
   var stream;
   var randomGenerator = Random();
   var weekDayList = ['일', '월', '화', '수', '목', '금', '토', '일'];
@@ -37,9 +32,6 @@ class _NoticeBoardScreenState extends State<NoticeBoardScreen> with AutomaticKee
   BannerAd? banner;
   InterstitialAd? interstitial;
 
-  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
-  // final FlutterNotifications _notifications = Notifications();
   @override
   void initState() {
     super.initState();

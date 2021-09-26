@@ -20,7 +20,7 @@ class MotivationScreen extends StatefulWidget {
 
 class _MotivationScreenState extends State<MotivationScreen> with AutomaticKeepAliveClientMixin<MotivationScreen> {
   var _lastRow = 0;
-  final FETCH_ROW = 5;
+  final FETCH_ROW = 10;
   var stream;
   var randomGenerator = Random();
   var weekDayList = ['일', '월', '화', '수', '목', '금', '토', '일'];

@@ -22,7 +22,7 @@ class ThinkAboutRichScreen extends StatefulWidget {
 
 class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> with AutomaticKeepAliveClientMixin<ThinkAboutRichScreen> {
   var _lastRow = 0;
-  final FETCH_ROW = 5;
+  final FETCH_ROW = 10;
   var stream;
   var randomGenerator = Random();
   var weekDayList = ['일', '월', '화', '수', '목', '금', '토', '일'];

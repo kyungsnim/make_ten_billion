@@ -20,7 +20,7 @@ class HowToBeRichScreen extends StatefulWidget {
 
 class _HowToBeRichScreenState extends State<HowToBeRichScreen> with AutomaticKeepAliveClientMixin<HowToBeRichScreen> {
   var _lastRow = 0;
-  final FETCH_ROW = 5;
+  final FETCH_ROW = 10;
   var stream;
   var randomGenerator = Random();
   var weekDayList = ['일', '월', '화', '수', '목', '금', '토', '일'];
@@ -34,17 +34,9 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> with AutomaticKee
   BannerAd? banner;
   InterstitialAd? interstitial;
 
-  // FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-
-  // final FlutterNotifications _notifications = Notifications();
   @override
   void initState() {
     super.initState();
-
-    // if (Platform.isIOS) {
-    //   _firebaseMessaging.requestPermission();
-    // }
-    // getToken();
 
     stream = newStream();
 
@@ -76,11 +68,6 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> with AutomaticKee
         .orderBy("createdAt", descending: true)
         .limit(FETCH_ROW * (_lastRow + 1))
         .snapshots();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
   }
 
   @override
@@ -119,37 +106,31 @@ class _HowToBeRichScreenState extends State<HowToBeRichScreen> with AutomaticKee
         return GetBuilder<AuthController>(builder: (_) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: Scrollbar(
-                    child: ListView(
-                      controller: _scrollController,
-                      children: [
-                        authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin') ?
-                        Container(
-                          height: 50.0,
-                          child: AdWidget(
-                            ad: banner!,
-                          ),
-                        )
-                            : SizedBox(),
-                        // TextButton(
-                        //   onPressed: () {
-                        //     _firebaseMessaging.sendMessage(to: tmpToken, data: {
-                        //       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-                        //       'id': '1',
-                        //       'status': 'done'
-                        //     }, );
-                        //   },
-                        //   child: Text('Send Message'),
-                        // ),
-                        _buildBody(context),
-                      ],
+            child: Scrollbar(
+              child: ListView(
+                controller: _scrollController,
+                children: [
+                  authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin') ?
+                  Container(
+                    height: 50.0,
+                    child: AdWidget(
+                      ad: banner!,
                     ),
-                  ),
-                ),
-              ],
+                  )
+                      : SizedBox(),
+                  // TextButton(
+                  //   onPressed: () {
+                  //     _firebaseMessaging.sendMessage(to: tmpToken, data: {
+                  //       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                  //       'id': '1',
+                  //       'status': 'done'
+                  //     }, );
+                  //   },
+                  //   child: Text('Send Message'),
+                  // ),
+                  _buildBody(context),
+                ],
+              ),
             ),
           );
         });

@@ -12,12 +12,12 @@ class NoticeController extends GetxController {
   WriteBatch writeBatch = FirebaseFirestore.instance.batch();
   DateTime _createdAt = DateTime.now();
   DateTime picked = DateTime.now();
-  Rxn<NoticeModel> notice = Rxn<NoticeModel>();
-  var count = 0;
-  var lastRow = 0;
-  final FETCH_ROW = 5;
-  var stream;
-  ScrollController scrollController = new ScrollController();
+  // Rxn<NoticeModel> notice = Rxn<NoticeModel>();
+  // var count = 0;
+  // var lastRow = 0;
+  // final FETCH_ROW = 5;
+  // var stream;
+  // ScrollController scrollController = new ScrollController();
   var noticeDbRef = FirebaseFirestore.instance.collection('HowToBeRich');
 
   bool isLoading = false;
@@ -35,12 +35,12 @@ class NoticeController extends GetxController {
     super.onReady();
   }
 
-  Stream<QuerySnapshot> newStream() {
-    return noticeDbRef
-        .orderBy("createdAt", descending: true)
-        .limit(FETCH_ROW * (lastRow + 1))
-        .snapshots();
-  }
+  // Stream<QuerySnapshot> newStream() {
+  //   return noticeDbRef
+  //       .orderBy("createdAt", descending: true)
+  //       .limit(FETCH_ROW * (lastRow + 1))
+  //       .snapshots();
+  // }
 
   void addHowToBeRichNotice(String noticeId, Map<String, dynamic> noticeData) {
     FirebaseFirestore.instance.collection('HowToBeRich').doc(noticeId).set(noticeData);
