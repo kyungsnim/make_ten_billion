@@ -258,17 +258,6 @@ class _ThinkAboutRichScreenState extends State<ThinkAboutRichScreen> with Automa
                           ),
                           SizedBox(width: 3),
                           Text(
-                            '${notice.like.toString()}',
-                            softWrap: true,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),
-                          ),
-                          Spacer(),
-                          Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.grey,
-                          ),
-                          SizedBox(width: 3),
-                          Text(
                             '${notice.read.toString()}',
                             softWrap: true,
                             style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Binggrae', fontSize: 16,),

@@ -49,6 +49,10 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
   void initState() {
     super.initState();
 
+    setState(() {
+      isLoading = false;
+    });
+
     if(authController.firestoreUser.value == null || (authController.firestoreUser.value != null && authController.firestoreUser.value!.role != 'admin')) {
       banner = BannerAd(
         size: AdSize.mediumRectangle,
@@ -178,7 +182,7 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
             ]),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Container(
+          child: isLoading ? Container(child: Center(child: Text('잠시 기다려주세요', style: TextStyle(fontFamily: 'Binggrae', fontSize: 26, color: Colors.black87))), color: Colors.black45,) : Container(
             width: Get.width,
             height: Get.height,
             child: Scrollbar(
@@ -287,6 +291,11 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                                     .buildDynamicLink('HowToBeRichDetail',
                                         widget.detailNotice.id);
 
+                                print('link: $link');
+
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 /// Kakao Link share
                                 KakaoLinkWithDynamicLink()
                                     .isKakaotalkInstalled()
@@ -300,6 +309,11 @@ class _HowToBeRichDetailState extends State<HowToBeRichDetail> {
                                     Share.share(link);
                                   }
                                 });
+
+                                setState(() {
+                                  isLoading = false;
+                                });
+
                                 // },
                                 addShareCount(widget.detailNotice);
                               },

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:make_ten_billion/controller/controllers.dart';
+import 'package:make_ten_billion/helpers/kakao_link_with_dynamic_link.dart';
 import 'package:make_ten_billion/models/models.dart';
 import 'package:share/share.dart';
 
@@ -249,8 +250,35 @@ class _ThinkAboutRichDetailState extends State<ThinkAboutRichDetail> {
                             // Text(commentCount == null ? '-' : commentCount.toString(),),
                             Spacer(),
                             InkWell(
-                              onTap: () {
-                                Share.share(widget.detailNotice.description, subject: widget.detailNotice.title);
+                              onTap: () async {
+                                /// Make dynamic links
+                                String link = await KakaoLinkWithDynamicLink()
+                                    .buildDynamicLink('HowToBeRichDetail',
+                                    widget.detailNotice.id);
+
+                                print('link: $link');
+
+                                setState(() {
+                                  isLoading = true;
+                                });
+                                /// Kakao Link share
+                                KakaoLinkWithDynamicLink()
+                                    .isKakaotalkInstalled()
+                                    .then((installed) {
+                                  if (installed) {
+                                    print(1);
+                                    KakaoLinkWithDynamicLink()
+                                        .shareMyCode(widget.detailNotice, link);
+                                  } else {
+                                    // show alert
+                                    Share.share(link);
+                                  }
+                                });
+
+                                setState(() {
+                                  isLoading = false;
+                                });
+
                                 addShareCount(widget.detailNotice);
                               },
                               child: Padding(

@@ -254,20 +254,30 @@ class _MotivationDetailState extends State<MotivationDetail> {
                               onTap: () async {
                                 /// Make dynamic links
                                 String link = await KakaoLinkWithDynamicLink()
-                                    .buildDynamicLink('Motivation',
+                                    .buildDynamicLink('HowToBeRichDetail',
                                     widget.detailNotice.id);
 
+                                print('link: $link');
+
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 /// Kakao Link share
                                 KakaoLinkWithDynamicLink()
                                     .isKakaotalkInstalled()
                                     .then((installed) {
                                   if (installed) {
+                                    print(1);
                                     KakaoLinkWithDynamicLink()
                                         .shareMyCode(widget.detailNotice, link);
                                   } else {
                                     // show alert
                                     Share.share(link);
                                   }
+                                });
+
+                                setState(() {
+                                  isLoading = false;
                                 });
                                 // },
                                 addShareCount(widget.detailNotice);

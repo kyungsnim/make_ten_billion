@@ -29,7 +29,7 @@ final String iOSInterstitialId = 'ca-app-pub-2486335313636346/6227204951';
 final String androidTestId = 'ca-app-pub-3940256099942544/6300978111';
 final String iOSTestId = 'ca-app-pub-3940256099942544/2934735716';
 final String iOSInterstitialTestId = 'ca-app-pub-3940256099942544/4411468910';
-
+var isLoading;
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> _messageHandler(RemoteMessage message) async {
@@ -63,7 +63,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   MobileAds.instance.initialize();
-  KakaoContext.clientId = 'b6cb50231a2306a68657a2a6e07a13b';
+  KakaoContext.clientId = 'b6cb50231a2306a68657a2a6e07a1d3b';
 
   Directory directory = await getApplicationDocumentsDirectory();
   Hive.init(directory.path);

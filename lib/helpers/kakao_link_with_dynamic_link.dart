@@ -24,6 +24,7 @@ class KakaoLinkWithDynamicLink {
       /// 카카오톡 FeedTemplate으로 공유메시지 만들기
       var template = getTemplate(notice, link);
       var uri = await LinkClient.instance.defaultWithTalk(template);
+
       /// 카카오톡 링크 공유
       await LinkClient.instance.launchKakaoTalk(uri);
     } catch (error) {

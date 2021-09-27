@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "852584091604-qkgppfj2rim3sjfhvlopetr6h1m1lfmr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kyungsnim.make_ten_billion",
+            "certificate_hash": "d7d8071b3a120ac38bb0c99f6943e274b364812d"
+          }
+        },
+        {
           "client_id": "852584091604-ucn5ek2i9u1jlve3oef60hc1aij2ued9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
